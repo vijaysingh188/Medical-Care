@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block title %} Subscription Master - Module Master {% endblock %}
+
+{% block body %}
+
+        <div class="main">
+            <div class="inner-navbar">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a class="nav-link active" href="Subscription_Master-Existing_Module_Master.html">Module Master</a></li>
+                        <li class="nav-item"><a class="nav-link" href="Subscription_Master-Existing_Add-on_Services.html">Add-on Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="Subscription_Master-Existing_Subscription_Plan.html">Subscription Plan</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="content-holder">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div {% if message.tags %} class="alert {{ message.tags }} text-center"{% endif %}>
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    <div class="row">
+                        <div class="col-md-12 order-md-1">
+                            <h5 class="title-holder">Update Module</h5>
+                            <div class="btn-holder">
+                                <a class="link-btn" href="{% url 'laboratorytable' %}">Back to list</a>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form class="needs-validation" method="post">
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                              <label for=""> Investigation Name <span class="red-color"> * </span></label>
+                                            {{ rag.investigationname | add_class:'form-control' }}
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label>Synonyms<span class="red-color"> * </span></label>
+                                        {{ rag.synonyms |  add_class:'form-control' }}
+                                            </div>
+
+                                            <div class="col-md-4 mb-3">
+                                                <label>Important Notes <span class="red-color"> * </span></label>
+                                            {{ rag.importantnotes | add_class:'form-control' }}
+                                            </div>
+
+                                            <div class="col-md-4 mb-3">
+                                                <label>Display result Field <span class="red-color"> * </span></label>
+                                                <label><input type="radio"name="shipping" id="rd1">Empty Textbox</label>
+                                                <label><input type="radio" name="shipping" id="rd2">Pre-Define Dropdown</label>
+                                                
+                                           </div>
+                                           
+                                                 <div class="col-md-4 mb-3" id="sty1">
+                                                   <label>Display DropDownList</label>
+                                            
+                                              {{ rag.selectdropdownlist }}
+                                                   </div>
+                                            
+
+                                                 <div class="col-md-4 mb-3" id="sty1">
+                                          <label>Select<span class="red-color"> * </span></label>
+                                                {{ rag.select | add_class:'form-control' }}
+                                            </div>
+                                       
+                                   
+                                            <div class="col-md-12">
+                                                <div class="mybtn-holder">
+                                                    <button class="mybtn" data-toggle="collapse" data-target="#demo">Cancel</button>
+                                                    <button class="mybtn" type="submit">Update</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}
+    {% block javascript %}  
+
+    {% endblock %}
