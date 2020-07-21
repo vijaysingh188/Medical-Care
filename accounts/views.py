@@ -688,10 +688,23 @@ def labo2(request):
 	return render(request,'sample.html',{'module':module})
 
 def user_list(request):
-	coustmore_obj = CustomUser.objects.all()
-	obj = IndivdualUserProfile.objects.all()
+	custmore_obj = CustomUser.objects.all()
+
 	context = {
-		'customers':obj,
-		'coustmore_obj':coustmore_obj
+		'customers':custmore_obj
+
 	}
 	return render(request,'user_list.html',context)
+
+
+
+def add_individual_user(request):
+	if request.method == 'POST':
+		form = IndivdualUserForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect("../")
+	else:
+		form = IndivdualUserForm()
+	return render(request,'add_user.html',{'form':form})
+

@@ -1,0 +1,119 @@
+
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+     <head>
+		<title>Health Perigon </title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/png" href="{% static 'images/icon.png' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900" >
+		<link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
+    </head>
+    <body>
+                <div class="content-holder">
+                    {% if messages %}
+					{% for message in messages %}
+						<div {% if message.tags %} class="alert {{ message.tags }} text-center"{% endif %}>
+							{{ message }}
+						</div>
+					{% endfor %}
+				{% endif %}
+                </div>
+
+                <div class="container   position: relative">
+                <form method="POST" action="#">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input value="submit" class="btn btn-primary" type="submit">
+
+                </form>
+            </div>
+    </body>
+
+    <script>
+        function statusFunction() {
+            var x = document.getElementById("status1").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction() {
+            var x = document.getElementById("status1").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction() {
+            var x = document.getElementById("status1").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction() {
+            var x = document.getElementById("status1").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction1() {
+            var x = document.getElementById("status1").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction2() {
+            var x = document.getElementById("status2").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction3() {
+            var x = document.getElementById("status3").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction4() {
+            var x = document.getElementById("status4").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction5() {
+            var x = document.getElementById("status5").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction6() {
+            var x = document.getElementById("status6").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction7() {
+            var x = document.getElementById("status7").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction8() {
+            var x = document.getElementById("status8").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction9() {
+            var x = document.getElementById("status9").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction10() {
+            var x = document.getElementById("status10").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+    </script>
+   <script>
+		  $(function () {
+			$('#myTab li:last-child a').tab('show')
+		  })
+    </script>
+	<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+	<script src="{% static 'js/popper-1.16.0.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    </body>
+</html>

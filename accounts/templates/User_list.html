@@ -53,7 +53,7 @@
 						<div class="row">
 							<div class="col-md-12">
 							    <div class="btn-holder">
-							        <a class="link-btn-2" href="">Add User</a>
+							        <a class="link-btn-2" href="{% url 'add_individual_user' %}">Add User</a>
 									<hr class="hrstyle" />
 						        </div>
 							</div>
@@ -87,11 +87,11 @@
 											{% for individual in customers %}
 											<tr>
 												<td>{{ forloop.counter }}</td>
-												<td>{{coustmore_obj.special_id }}</td>
-												<td>{{individual.first_name}} {{individual.middle_name}} {{individual.last_name}}</td>
+												<td>{{ individual}}</td>
+												<td>{{individual.title }}  {{individual.first_name}} {{individual.middle_name}} {{individual.last_name}}</td>
 												<td>Junior Doctor</td>
-												<td>{{ individual.email1 }}</td>
-												<td>{{ individual.phone_no1 }}</td>
+												<td>{{ individual.email }}</td>
+												<td>{{ individual.phone_no }}</td>
 												<td>
 												    <select class="form-control"  name="status1" id="status1" onchange="statusFunction()">
 													    <option value="Activate">Active</option>

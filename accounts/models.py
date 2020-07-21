@@ -177,6 +177,9 @@ class Labour(models.Model):
 	selectdropdownlist=models.CharField(choices=GENDER_CHOICES,max_length=20)
 	select=models.CharField(max_length=255)
 
+	def __str__(self):
+		return self.investigationname
+
 	def __unicode__(self):
 		return self.investigationname
 
