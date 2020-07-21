@@ -165,7 +165,7 @@ body{
 .nav-tabs .nav-link:hover {
 	background:#00adee;
 	color:#fff;
-    
+
 }
 .action-icons{
 	font-size:18px;
@@ -294,13 +294,13 @@ label {
     color:#fff;
 }
  @media (min-width: 768px) {
-   
+
 }
  @media (min-width: 992px) {
-   
+
 }
  @media (min-width: 1200px) {
-   
+
 }
  @media (max-width:767px) {
      .left-content{

@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from accounts.models import CustomUser
+from django.forms import inlineformset_factory
 
 class UserForm(forms.ModelForm):
 	doctor_options = (
@@ -36,21 +37,21 @@ class UserForm(forms.ModelForm):
 
 	class Meta:
 		model = CustomUser
-		fields = ['title','first_name','middle_name','last_name','type_of_doctor','password','payment','usecode','phone_no','email','house_no','street','area','city','taluka','district','state','pincode','country','name_of_hospital','no_of_doctor_accounts','owner_name','name_of_nursing_home']
+		fields = ['title','first_name','middle_name','last_name','type_of_doctor','payment','usecode','phone_no','email','house_no','street','area','city','taluka','district','state','pincode','country','name_of_hospital','no_of_doctor_accounts','owner_name','name_of_nursing_home']
 
-class IndivdualDoctorProfileForm(forms.ModelForm):	
+class IndivdualDoctorProfileForm(forms.ModelForm):
 	gender_options = (
 		('Select Gender', 'Select Gender'),
 		('M', 'Male'),
 		('F', 'Female'),
 		)
-	
+
 	gender = forms.ChoiceField(choices=gender_options)
-	dob = forms.CharField()
+	dob = forms.IntegerField()
 	qualification = forms.CharField()
 	speciality1 = forms.CharField()
-	speciality2 = forms.CharField()
-	speciality3 = forms.CharField()
+	speciality2 = forms.CharField(required=False)
+	speciality3 = forms.CharField(required=False)
 	practicing_since = forms.CharField()
 	reg_no_state = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'State'}))
 	reg_no_number = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Number'}))
@@ -75,10 +76,10 @@ class IndivdualDoctorProfileForm(forms.ModelForm):
 		model = CustomUser
 		fields = ['gender','dob','qualification','speciality1','speciality2','speciality3','practicing_since','reg_no_state','reg_no_number','reg_no_year','email1','picture','phone_no1','landline_no','landline_no1','res_state','res_country','res_pincode','res_district','res_street','res_area','res_taluka','res_house_no','res_city']
 
-class NursingHomeProfileForm(forms.ModelForm):	
+class NursingHomeProfileForm(forms.ModelForm):
 	speciality1 = forms.CharField()
-	speciality2 = forms.CharField()
-	speciality3 = forms.CharField()
+	speciality2 = forms.CharField(required=False)
+	speciality3 = forms.CharField(required=False)
 	reg_no_state = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'State'}))
 	reg_no_number = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Number'}))
 	reg_no_year = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Year'}))
@@ -91,10 +92,10 @@ class NursingHomeProfileForm(forms.ModelForm):
 		model = CustomUser
 		fields = ['speciality1','speciality2','speciality3','reg_no_state','reg_no_number','reg_no_year','email1','picture','phone_no1','landline_no']
 
-class HospitalProfileForm(forms.ModelForm):	
+class HospitalProfileForm(forms.ModelForm):
 	speciality1 = forms.CharField()
-	speciality2 = forms.CharField()
-	speciality3 = forms.CharField()
+	speciality2 = forms.CharField(required=False)
+	speciality3 = forms.CharField(required=False)
 	reg_no_state = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'State'}))
 	reg_no_number = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Number'}))
 	reg_no_year = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Year'}))
@@ -107,7 +108,7 @@ class HospitalProfileForm(forms.ModelForm):
 		model = CustomUser
 		fields = ['speciality1','speciality2','speciality3','reg_no_state','reg_no_number','reg_no_year','email1','picture','phone_no1','landline_no']
 
-class IndivdualUserProfileForm(forms.ModelForm):	
+class IndivdualUserProfileForm(forms.ModelForm):
 	gender_options = (
 		('Select Gender', 'Select Gender'),
 		('Male', 'Male'),
@@ -124,9 +125,9 @@ class IndivdualUserProfileForm(forms.ModelForm):
 		('Brother', 'Brother'),
 		('Sister', 'Sister'),
 		)
-	
+
 	gender = forms.ChoiceField(choices=gender_options)
-	dob = forms.CharField()
+	dob = forms.DateField(widget=forms.DateInput(attrs={'id':'datepicker'}),required=False)
 	phone_no1 = forms.CharField()
 	email1 = forms.CharField()
 	landline_no = forms.CharField()

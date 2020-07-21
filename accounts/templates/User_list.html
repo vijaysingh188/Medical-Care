@@ -1,0 +1,202 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+     <head>
+		<title>Health Perigon </title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" type="image/png" href="{% static 'images/icon.png' %}"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900" >
+		<link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
+    </head>
+    <body>
+	<nav class="header" >
+		<div class="container-fluid">
+		    <div class="row">
+		        <div class="col-md-12">
+				    <div class="navbar-expand-md logo-holder">
+					    <img src="{% static 'images/logo.png' %}" class="logo" alt="Health Perigon">
+				    </div>
+			        <div class="logout-btn-holder">
+		                <a class="iconstyle" href="login.html"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	</nav>
+	<div class="aside">
+            <nav class="navbar navbar-expand-md">
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav">
+                         <a class="profile" href="#">
+						 <i class="fa fa-user-md profileicon" aria-hidden="true"></i>
+						  <Span class="profiletext">Name</span>
+                           <span class="profiletext">Designation</span>
+						</a>
+                        <a class="nav-link active" href="#">User Creation</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+	<div class="main">
+		<div class="col-md-12">
+			<div class="content-holder">
+				<div class="row">
+					<div class="col-md-12 order-md-1">
+						<div class="row">
+							<div class="col-md-12">
+							    <div class="btn-holder">
+							        <a class="link-btn-2" href="">Add User</a>
+									<hr class="hrstyle" />
+						        </div>
+							</div>
+						</div>
+						<div class="row justify-content-center">
+						    <div class="col-md-12 form-group">
+							    <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search by Perigon ID, Name, Email id, Phone Number, Status">
+									<span class="input-group-append">
+									   <div class="input-group-text input-group-icon"><i class="fa fa-search" aria-hidden="true"></i></div>
+									</span>
+                                </div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+							    <div class="table-responsive">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>S.No</th>
+												<th>Perigon ID</th>
+												<th>User Name</th>
+												<th>User Type</th>
+												<th>Email Address</th>
+												<th>Phone Number</th>
+												<th>Status</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for individual in customers %}
+											<tr>
+												<td>{{ forloop.counter }}</td>
+												<td>{{coustmore_obj.special_id }}</td>
+												<td>{{individual.first_name}} {{individual.middle_name}} {{individual.last_name}}</td>
+												<td>Junior Doctor</td>
+												<td>{{ individual.email1 }}</td>
+												<td>{{ individual.phone_no1 }}</td>
+												<td>
+												    <select class="form-control"  name="status1" id="status1" onchange="statusFunction()">
+													    <option value="Activate">Active</option>
+													    <option value="Inactive">Inactive</option>
+													</select>
+											    </td>
+												{% endfor %}
+										</tbody>
+									</table>
+								</div>
+								<nav aria-label="...">
+									<ul class="pagination pagination-sm justify-content-center">
+										<li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+										<li class="page-item"><a class="page-link" href="#">1</a></li>
+										<li class="page-item active"><a class="page-link" href="#">2 <span class="sr-only">(current)</span></a></li>
+										<li class="page-item"><a class="page-link" href="#">3</a></li>
+										<li class="page-item"><a class="page-link" href="#">Next</a></li>
+									</ul>
+								</nav>
+                            </div>
+						</div>
+				    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function statusFunction() {
+            var x = document.getElementById("status1").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction() {
+            var x = document.getElementById("status1").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction() {
+            var x = document.getElementById("status1").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction() {
+            var x = document.getElementById("status1").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction1() {
+            var x = document.getElementById("status1").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction2() {
+            var x = document.getElementById("status2").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction3() {
+            var x = document.getElementById("status3").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction4() {
+            var x = document.getElementById("status4").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction5() {
+            var x = document.getElementById("status5").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction6() {
+            var x = document.getElementById("status6").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction7() {
+            var x = document.getElementById("status7").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction8() {
+            var x = document.getElementById("status8").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction9() {
+            var x = document.getElementById("status9").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+		function statusFunction10() {
+            var x = document.getElementById("status10").value;
+
+            alert("Are you sure, do you want to " + x);
+        }
+    </script>
+   <script>
+		  $(function () {
+			$('#myTab li:last-child a').tab('show')
+		  })
+    </script>
+	<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+	<script src="{% static 'js/popper-1.16.0.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    </body>
+</html>
