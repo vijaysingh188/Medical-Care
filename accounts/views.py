@@ -708,3 +708,40 @@ def add_individual_user(request):
 		form = IndivdualUserForm()
 	return render(request,'add_user.html',{'form':form})
 
+
+@csrf_exempt
+def User_creation(request):
+	print(request)
+
+	if request.method == 'POST':
+		print("sdhjbdshbcksnnsfjncnf")
+		form = IndivdualDoctorForm(request.POST)
+		first_name = request.POST.get('first_name')
+		print(first_name)
+		print(form.errors)
+		if form.is_valid():
+			if form.save():
+				return redirect('/User_creation', messages.success(request, 'Thank you for contacting Us. Our team will contact you as soon as earliest.', 'alert-success'))
+			else:
+				return redirect('/User_creation', messages.error(request, 'Something went wrong!', 'alert-danger'))
+		else:
+			return redirect('/User_creation', messages.error(request, 'Form is not valid', 'alert-danger'))
+	else:
+		form = IndivdualDoctorForm()
+		return render(request, "User_creation.html", {'form': form})
+
+
+
+# qury = CustomUser.objects.filter(email__icontains="mike")
+
+
+
+
+
+
+
+
+
+
+
+

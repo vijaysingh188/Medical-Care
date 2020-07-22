@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from accounts.views import home, login_view, logout_view, contact, activate_account, register, password_reset, contact_master, change_password, send_otp, verify_otp, existing_module_master, create_module_master, edit_module_master, destroy_module_master, addservice,addonservice,destroyonservice,pharmacy,pharmacytable,laboratory,lob,destroypharamcy,labotable,destroylaboratory,destroyemptytext,edit_laboratorytable,edit_service,edit_pharmacy,edit_labotable,update_database,labo2,user_list,add_individual_user
+from accounts.views import home, login_view, logout_view, contact, activate_account, register, password_reset, contact_master, change_password, send_otp, verify_otp, existing_module_master, create_module_master, edit_module_master, destroy_module_master, addservice,addonservice,destroyonservice,pharmacy,pharmacytable,laboratory,lob,destroypharamcy,labotable,destroylaboratory,destroyemptytext,edit_laboratorytable,edit_service,edit_pharmacy,edit_labotable,update_database,labo2,user_list,add_individual_user,User_creation
 from profiles.views import individual_doctor, individual_user, nursing_home, hospital
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,5 +41,8 @@ urlpatterns = [
     path('profile_nursing_home/',nursing_home, name="profile_nursing_home"),
 
     path('user_list/',user_list,name='user_list'),
-    path('add_individual_user/',add_individual_user,name='add_individual_user')
+    path('add_individual_user/',add_individual_user,name='add_individual_user'),
+    path('User_creation/',User_creation,name='User_creation'),
+
+
 ]

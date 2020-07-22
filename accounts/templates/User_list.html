@@ -12,6 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900" >
 		<link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
+		 <link rel="stylesheet" type="text/css" href="{% static 'css/pagination.css' %}">
     </head>
     <body>
 	<nav class="header" >
@@ -40,7 +41,7 @@
 						  <Span class="profiletext">Name</span>
                            <span class="profiletext">Designation</span>
 						</a>
-                        <a class="nav-link active" href="#">User Creation</a>
+                        <a class="nav-link active" href="{% url 'User_creation' %}">User Creation</a>
                     </div>
                 </div>
             </nav>
@@ -61,7 +62,7 @@
 						<div class="row justify-content-center">
 						    <div class="col-md-12 form-group">
 							    <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search by Perigon ID, Name, Email id, Phone Number, Status">
+                                    <input type="text" class="form-control" id="myInput" placeholder="Search by Perigon ID, Name, Email id, Phone Number, Status">
 									<span class="input-group-append">
 									   <div class="input-group-text input-group-icon"><i class="fa fa-search" aria-hidden="true"></i></div>
 									</span>
@@ -83,12 +84,12 @@
 												<th>Status</th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody id="myTable">
 											{% for individual in customers %}
 											<tr>
 												<td>{{ forloop.counter }}</td>
-												<td>{{ individual}}</td>
-												<td>{{individual.title }}  {{individual.first_name}} {{individual.middle_name}} {{individual.last_name}}</td>
+												<td>AA202120</td>
+												<td >{{individual.title }}  {{individual.first_name}} {{individual.middle_name}} {{individual.last_name}}</td>
 												<td>Junior Doctor</td>
 												<td>{{ individual.email }}</td>
 												<td>{{ individual.phone_no }}</td>
@@ -198,5 +199,20 @@
 	<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
 	<script src="{% static 'js/popper-1.16.0.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
+<script>
+	src="{% static 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js' %}"></script>
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+
     </body>
 </html>
