@@ -1,5 +1,4 @@
 
-	src="{% static 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js' %}"
 
 $(document).ready(function(){
   $("#myInput").on("keyup", function() {
