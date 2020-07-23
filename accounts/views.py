@@ -225,7 +225,7 @@ def register(request):
 			if CustomUser.objects.filter(email=email).exists():
 				return redirect('/register', messages.error(request, 'Email already Exists!', 'alert-danger'))
 			elif CustomUser.objects.filter(phone_no=phone_no).exists():
-				return redirect('/register', messages.error(request, 'Phone Number already Exists!', 'alert-danger'))
+				return redirect ('/register', messages.error(request, 'Phone Number already Exists!', 'alert-danger'))
 			else:
 				return redirect('/register', messages.error(request, 'Form is not valid', 'alert-danger'))
 	else:

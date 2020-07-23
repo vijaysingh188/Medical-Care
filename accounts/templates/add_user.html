@@ -43,9 +43,9 @@
 					{% endfor %}
 				{% endif %}
                 </div>
-
-                <div class="container   position: relative">
-                <form method="POST" action="#">
+	<hr>
+                <div class="col 10">
+                <form method="POST" action="{% url 'user_list' %}">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <input value="submit" class="btn btn-primary" type="submit">

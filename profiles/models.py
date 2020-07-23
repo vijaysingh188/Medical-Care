@@ -65,9 +65,6 @@ class HospitalProfile(models.Model):
 
 class IndivdualUserProfile(models.Model):
 	user =models.OneToOneField('accounts.CustomUser', on_delete= models.CASCADE)
-	first_name = models.CharField(max_length=150)
-	last_name = models.CharField(max_length=150)
-	middle_name = models.CharField(max_length=150)
 	gender = models.CharField(max_length=50)
 	dob = models.CharField(max_length=150)
 	phone_no1 = models.CharField(max_length=150)
