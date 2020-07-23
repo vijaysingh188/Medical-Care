@@ -54,7 +54,7 @@
 												<td>{{ individual.email }}</td>
 												<td>{{ individual.phone_no }}</td>
 												<td>
-												    <select class="form-control"  name="status1" id="status1" onchange="statusFunction()">
+												    <select class="form-control"  name="status1" id="select_dropdown">
 													    <option value="Activate">Active</option>
 													    <option value="Inactive">InActive </option>
 													</select>
@@ -63,7 +63,7 @@
 										</tbody>
 									</table>
 								</div>
-
+v
                             </div>
 						</div>
 				    </div>
@@ -75,12 +75,13 @@
 
     {% endblock %}
 {% block javascript %}
-    <script>
-        function statusFunction() {
+<script>
+	     function statusFunction() {
             var x = document.getElementById("status1").value;
 
             alert("Are you sure, do you want to " + x);
         }
+
 		function statusFunction() {
             var x = document.getElementById("status1").value;
 
@@ -149,7 +150,6 @@
 
 
 </script>
-
 <script>
 $(function() {
   var oTable = $('#datatable').DataTable({
@@ -224,8 +224,6 @@ $.fn.dataTableExt.afnFiltering.push(
 
 
 </script>
-
-
 
 <script>
 

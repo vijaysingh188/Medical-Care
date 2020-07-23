@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -39,16 +40,16 @@
 			    <span class="navbar-toggler-icon"><i class="fa fa-bars" aria-hidden="true"></i></span>
 		    </button>
 			<div class="collapse navbar-collapse" id="navbarCollapse">
-				<div class=" navbar-nav">
-				    <a class="nav-link " href="#">Dashboard</a>
-					<a class="nav-link active" href="#">Subscription Master</a>
+				<div class=" navbar-nav" id="myDIV">
+				    <a class="nav-link" href="#">Dashboard</a>
+					<a class="nav-link {{existing_module_master_isactive}}" href="{% url 'existing_module_master' %}">Subscription Master</a>
 					<a class="nav-link" href="#">Subscriber Registry</a>
 					<a class="nav-link" href="#">Pharmacy Master</a>
 					<a class="nav-link" href="#">Laboratory Master</a>
 					<a class="nav-link" href="#">Recently Added</a>
 					<a class="nav-link" href="#">Reword Master</a>
 					<a class="nav-link" href="#">Anncouncement </a>
-					<a class="nav-link" href="{% url 'user_list' %}">User List</a>
+					<a class="nav-link {{home_page}}" href="{% url 'user_list' %}">User List</a>
 				</div>
 			</div>
 		</nav>  
@@ -63,6 +64,8 @@
 
 	<script src="{% static 'js/libs/DataTables/datatables.min.js' %}"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/jquery-ui.js"></script>
+
+
 
     {% block javascript %}
     {% endblock %}

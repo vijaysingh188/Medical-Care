@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from .models import SecurityQuestions, ModuleMaster, Contact, CustomUser, AddOnServices, pharamcytab, Labour, Emptytext, Empty
-from django.http import Http404
+from django.http import Http404,HttpResponse
 from django.http import Http404
 from django.contrib import messages
 from django.http import JsonResponse
@@ -294,7 +294,12 @@ def existing_module_master(request):
 		# user = ModuleMaster.objects.get(user=request.user)
 		# module = ModuleMaster.objects.filter(user=user.user)
 		module = ModuleMaster.objects.all()
-		return render(request, "Subscription_Master-Existing_Module_Master.html", {'module': module})
+		context ={
+			'module': module,
+			'existing_module_master_isactive':'active'
+
+		}
+		return render(request, "Subscription_Master-Existing_Module_Master.html", context)
 
 
 @superadmin_required
@@ -691,7 +696,8 @@ def user_list(request):
 	custmore_obj = CustomUser.objects.all()
 
 	context = {
-		'customers':custmore_obj
+		'customers':custmore_obj,
+		'home_page':'active'
 
 	}
 	return render(request,'user_list.html',context)
@@ -733,6 +739,58 @@ def User_creation(request):
 
 
 # qury = CustomUser.objects.filter(email__icontains="mike")
+
+
+@csrf_exempt
+def individual_doctor_user_list(request):
+	print(request.user)
+	user_list=IndivdualUserProfile.objects.filter(user=request.user).values_list('email1',flat=True) #dob, email1, gender, id, landline_no, phone_no1, relation_email, relation_name,
+	print(user_list,"user_list")
+	user_custom_data=CustomUser.objects.filter(email__in=user_list).values('dob','gender','id','email1','phone_no','relation_email','relation_name')
+	print(user_custom_data,"user_custom_data")
+	return render(request,'User_List.html',{'user_data':user_custom_data})
+
+
+#
+# def Unread(request):
+# 	import requests
+# 	import json
+# 	print("hello")
+#
+# 	count=request.body['count']
+#
+# 	print("count status ",count)
+
+from django.http import JsonResponse
+
+
+def Unreadpost(request):
+
+	if request.method == "POST":
+		get_value = request.body
+		print(get_value,"get_value")
+
+		data = {}
+		data['result'] = 'you made a request'
+		return HttpResponse(json.dumps(data),content_type="application/json")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
