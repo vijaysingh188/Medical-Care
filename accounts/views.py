@@ -692,15 +692,7 @@ def labo2(request):
 	module = Empty.objects.all()
 	return render(request,'sample.html',{'module':module})
 
-def user_list(request):
-	custmore_obj = CustomUser.objects.all()
 
-	context = {
-		'customers':custmore_obj,
-		'home_page':'active'
-
-	}
-	return render(request,'user_list.html',context)
 
 
 
@@ -746,39 +738,61 @@ def individual_doctor_user_list(request):
 	print(request.user)
 	user_list=IndivdualUserProfile.objects.filter(user=request.user).values_list('email1',flat=True) #dob, email1, gender, id, landline_no, phone_no1, relation_email, relation_name,
 	print(user_list,"user_list")
-	user_custom_data=CustomUser.objects.filter(email__in=user_list).values('dob','gender','id','email1','phone_no','relation_email','relation_name')
+	user_custom_data=CustomUser.objects.filter(email__in=user_list).values('email','country')
 	print(user_custom_data,"user_custom_data")
 	return render(request,'User_List.html',{'user_data':user_custom_data})
 
 
-#
-# def Unread(request):
-# 	import requests
-# 	import json
-# 	print("hello")
-#
-# 	count=request.body['count']
-#
-# 	print("count status ",count)
-
-from django.http import JsonResponse
+def user_list(request):
+	custmore_obj = CustomUser.objects.all().values()
+	# print(custmore_obj,"custmore_obj")
+	context = {
+		'customers':custmore_obj
 
 
-def Unreadpost(request):
-
-	if request.method == "POST":
-		get_value = request.body
-		print(get_value,"get_value")
-
-		data = {}
-		data['result'] = 'you made a request'
-		return HttpResponse(json.dumps(data),content_type="application/json")
+	}
+	return render(request,'user_list.html',context)
 
 
 
 
 
 
+def account_status_change(request):
+    status = request.GET
+    print(status,"status")
+    some_list = CustomUser.objects.filter(special_id=status['id']).values_list('is_active', flat=True)
+    print(some_list,'some_list')
+    if some_list[0] == True:
+        print("yes")
+        some_list = CustomUser.objects.filter(special_id=status['id']).update(is_active=False)
+    elif some_list[0] == False:
+        print("else")
+        some_list = CustomUser.objects.filter(special_id=status['id']).update(is_active=True)
+    return redirect('/user_list/')
+
+
+
+
+
+
+
+
+
+
+
+
+	# wait pele hum log koi dusra code banate hai html mai ok
+	# ye serach karo ki user jab table mai jayega active hai to only inactive ana chahiye then inactive wale ko active fine?
+	# if user_list[0] == True:
+	# 	print("yess")
+	# 	user_list = CustomUser.objects.filter(special_id=status['id']).update(is_active=False)
+	#
+	# else:
+	# 	print("else")
+	# 	user_list = CustomUser.objects.filter(special_id=status['id']).update(is_active=True)
+	#
+	# return redirect('/user_list/')
 
 
 

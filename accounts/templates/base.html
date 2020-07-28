@@ -1,4 +1,5 @@
 {% load static %}
+{% url 'user_list' as user_list_url %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +50,8 @@
 					<a class="nav-link" href="#">Recently Added</a>
 					<a class="nav-link" href="#">Reword Master</a>
 					<a class="nav-link" href="#">Anncouncement </a>
-					<a class="nav-link {{home_page}}" href="{% url 'user_list' %}">User List</a>
+					<a class="nav-link {% if request.path == user_list_url %}active {%endif%}" href="{% url 'user_list' %}">User List</a>
+
 				</div>
 			</div>
 		</nav>  

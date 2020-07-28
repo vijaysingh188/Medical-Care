@@ -12,7 +12,7 @@ class CustomUser(AbstractUser):
 	email = models.EmailField(_('email address'), unique=True)
 	title = models.CharField(max_length=10, blank=True, null=True)
 	middle_name = models.CharField(max_length=255, blank=True, null=True)
-	phone_no = models.CharField(max_length=255, unique=True)
+	phone_no = models.CharField(max_length=255)
 	payment = models.CharField(max_length=255, blank=True, null=True)
 	usecode = models.CharField(max_length=255, blank=True, null=True)
 	type_of_doctor = models.CharField(max_length=255, blank=True, null=True)

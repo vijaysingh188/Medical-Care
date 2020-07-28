@@ -22,7 +22,7 @@
 						<div class="row justify-content-center">
 						    <div class="col-md-12 form-group">
 							    <div class="input-group">
-                                    <input type="text" class="form-control" id="myInput" placeholder="Search by Perigon ID, Name, Email id, Phone Number, Status">
+                                    <input type="text" class="form-control" id="search_name"placeholder="Search by Perigon ID, Name, Email id, Phone Number, Status">
 									<span class="input-group-append">
 									   <div class="input-group-text input-group-icon"><i class="fa fa-search" aria-hidden="true"></i></div>
 									</span>
@@ -44,7 +44,7 @@
 												<th>Status</th>
 											</tr>
 										</thead>
-										<tbody id="myTable">
+										<tbody>
 											{% for individual in customers %}
 											<tr>
 												<td>{{ forloop.counter }}</td>
@@ -54,17 +54,24 @@
 												<td>{{ individual.email }}</td>
 												<td>{{ individual.phone_no }}</td>
 												<td>
-												    <select class="form-control"  name="status1" id="select_dropdown">
-													    <option value="Activate">Active</option>
-													    <option value="Inactive">InActive </option>
+												    <select class="form-control"  name="status1" id="status1">
+												    		{% if individual.is_active %}
+														<option value="InActive" >InActive</option>
+														<option value="Active" selected>Active</option>
+
+
+														{% else %}
+														<option value="InActive" selected>InActive</option>
+														<option value="Active" >Active</option>
+
+													    {%endif%}
 													</select>
 											    </td>
 												{% endfor %}
 										</tbody>
 									</table>
 								</div>
-v
-                            </div>
+							</div>
 						</div>
 				    </div>
                 </div>
@@ -75,86 +82,12 @@ v
 
     {% endblock %}
 {% block javascript %}
+
 <script>
-	     function statusFunction() {
-            var x = document.getElementById("status1").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-
-		function statusFunction() {
-            var x = document.getElementById("status1").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-		function statusFunction() {
-            var x = document.getElementById("status1").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-		function statusFunction() {
-            var x = document.getElementById("status1").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-		function statusFunction1() {
-            var x = document.getElementById("status1").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-		function statusFunction2() {
-            var x = document.getElementById("status2").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-		function statusFunction3() {
-            var x = document.getElementById("status3").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-		function statusFunction4() {
-            var x = document.getElementById("status4").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-		function statusFunction5() {
-            var x = document.getElementById("status5").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-		function statusFunction6() {
-            var x = document.getElementById("status6").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-		function statusFunction7() {
-            var x = document.getElementById("status7").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-		function statusFunction8() {
-            var x = document.getElementById("status8").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-		function statusFunction9() {
-            var x = document.getElementById("status9").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-		function statusFunction10() {
-            var x = document.getElementById("status10").value;
-
-            alert("Are you sure, do you want to " + x);
-        }
-
-
-</script>
-<script>
-$(function() {
+   	$(function() {
   var oTable = $('#datatable').DataTable({
   	"lengthMenu": [[10, 25, 50, -1], [10, 15, 20,25]],
-    "pageLength": 4,
+    "pageLength": 10,
     "iDisplayLength": -1,
     "pagingType": "simple_numbers",
     "lengthChange": false,
@@ -214,16 +147,9 @@ $.fn.dataTableExt.afnFiltering.push(
     return true;
   }
 );
-    </script>
 
 </script>
-   <script>
-		  $(function () {
-			$('#myTab li:last-child a').tab('show')
-		  })
 
-
-</script>
 
 <script>
 
@@ -235,6 +161,27 @@ $.fn.dataTableExt.afnFiltering.push(
 	});
   });
 });
+</script>
+
+<script>
+
+
+	$('#datatable').find('tr').click( function(){
+    		var row = $(this).find('td:eq(1)').text();
+    		console.log(row,"this is row");
+    		// confirm("Are you sure")
+
+	    $.ajax({
+	      url: "{% url 'account_status_change' %}",
+	      type: "GET",
+		  data: {"id":row},
+	      headers: { "X-CSRFToken": "{{ csrf_token }}" }, // for csrf token
+	      success: function (data) {
+	      	// location.reload()
+	        // alert(data.result);
+	      },
+	    });
+	  })
 </script>
 
 {% endblock %}
