@@ -792,16 +792,62 @@ def individual_doctor_user_list(request):
 
 def user_list(request):
 	custmore_obj = CustomUser.objects.all().values()
-	# print(custmore_obj,"custmore_obj")
+	print(custmore_obj,"custmore_obj")
 	context = {
 		'customers':custmore_obj
-
-
 	}
 	return render(request,'user_list.html',context)
 
+def coupon_code_list(request):
+	coupon_obj = Coupon.objects.all().values_list('code', flat=True)
+	print(coupon_obj, "cp_obj")
+	final_data = []
+
+	for i in coupon_obj:
+		# count += 1
+		# print(count, "count")
+		# print(i, "cou name")
+		coup_count = CustomUser.objects.filter(usecode=i).values_list('email', flat=True)
+		# print(coup_count)
+		coup_count_use = len(coup_count)
+		# print(coup_count_use, "use len")
+		coupon_obj1 = list(Coupon.objects.filter(code=i).values())
+		# print(coupon_obj1, "end ")
+		a = dict(used_number=coup_count_use)
+		# print(a, "aaa")
+		coupon_obj1[0].update(a)
+		# print(coupon_obj1, "updated")
+		final_data.append(coupon_obj1)
+	# print(final_data,"final")
 
 
+	# coup_count=CustomUser.objects.filter(usecode__in=coupon_obj).values_list('email',flat=True)
+	# 	# print(coup_count)
+
+	# code_to_count = CustomUser.objects.filter(usecode=Coupon.id).count()
+	# print(code_to_count,'code_to_count')
+	done=[]
+	for l in final_data:
+		# print(l,"lll")
+		done.append(l[0])
+
+	context = {
+		'coupon':done
+	}
+	# print(done,"context")
+	return render(request,'coupon_code_list.html',context)
+
+
+
+
+
+# code_check = Coupon.objects.filter(code=usecode)
+# 			code_to_count = CustomUser.objects.filter(usecode=usecode).count()
+# 			count = Coupon.objects.filter(code=usecode).values_list('count_value',flat=True)
+# 			check_is_individual = Coupon.objects.filter(code=usecode).values_list('Profile_choices', flat=True)
+# 			print(check_is_individual[0], 'check_is_individual')                #is_individual
+# 			print(count[0],'count')
+#left databse
 
 
 
@@ -816,30 +862,45 @@ def account_status_change(request):
     elif some_list[0] == False:
         print("else")
         some_list = CustomUser.objects.filter(special_id=status['id']).update(is_active=True)
-    return redirect('/user_list/')
+    return HttpResponse()
+
+
+def Coupon_status_change(request):
+	status = request.GET
+	some_list = Coupon.objects.filter(code=status['id']).values_list('active')
+	print(some_list,'some_list')
+	res = [lis[0] for lis in some_list]
+	print(res[0])
+
+	if res[0] == True:
+		print("yes")
+		some_list =Coupon.objects.filter(code=status['id']).update(active=False)
+	elif res[0] == False:
+		print("else")
+		some_list = Coupon.objects.filter(code=status['id']).update(active=True)
+	return HttpResponse()
 
 
 
+# def Coupon_status_change(request):
+# 	status = request.GET
+# 	some_list = Coupon.objects.filter(code=status['id']).values_list('active')
+# 	print(some_list,'some_list')
+# 	subtitle = []
+# 	for value in some_list:
+# 		subtitle.append(value['active'])
+# 	print(subtitle[0], 'subtitle')
+# 	print(some_list, 'some_list')
+# 	if subtitle[0] == True:
+# 		print("yes")
+# 		some_list =Coupon.objects.filter(code=status['id']).update(active=False)
+# 	elif subtitle[0] == False:
+# 		print("else")
+# 		some_list = Coupon.objects.filter(code=status['id']).update(active=True)
+# 	return HttpResponse()
 
 
 
-
-
-
-
-
-
-	# wait pele hum log koi dusra code banate hai html mai ok
-	# ye serach karo ki user jab table mai jayega active hai to only inactive ana chahiye then inactive wale ko active fine?
-	# if user_list[0] == True:
-	# 	print("yess")
-	# 	user_list = CustomUser.objects.filter(special_id=status['id']).update(is_active=False)
-	#
-	# else:
-	# 	print("else")
-	# 	user_list = CustomUser.objects.filter(special_id=status['id']).update(is_active=True)
-	#
-	# return redirect('/user_list/')
 
 
 

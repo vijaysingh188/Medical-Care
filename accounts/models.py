@@ -205,7 +205,7 @@ class Coupon(models.Model):
 		('is_hdc_nursing_home', 'is_hdc_nursing_home')
 
 	)
-	code = models.CharField(max_length=150)
+	code = models.CharField(max_length=6)
 	valid_from = models.DateTimeField()
 	valid_to = models.DateTimeField()
 	count_value = models.IntegerField(default=100)

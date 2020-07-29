@@ -1,5 +1,6 @@
 {% load static %}
 {% url 'user_list' as user_list_url %}
+{% url 'coupon_code_list' as coupon_code_list_url %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,6 +52,7 @@
 					<a class="nav-link" href="#">Reword Master</a>
 					<a class="nav-link" href="#">Anncouncement </a>
 					<a class="nav-link {% if request.path == user_list_url %}active {%endif%}" href="{% url 'user_list' %}">User List</a>
+					<a class="nav-link {% if request.path == coupon_code_list_url %}active {%endif%}" href="{% url 'coupon_code_list' %}">Coupon code List</a>
 
 				</div>
 			</div>
