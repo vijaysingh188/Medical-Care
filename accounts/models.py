@@ -197,3 +197,22 @@ class Empty(models.Model):
 	def __str__(self):
 		return self.gender
 
+class Coupon(models.Model):
+	PROFILE_CHOICES = (
+		('is_individual', 'is_individual'),
+		('is_hdc_individual', 'is_hdc_individual'),
+		('is_hdc_hospital', 'is_hdc_hospital'),
+		('is_hdc_nursing_home', 'is_hdc_nursing_home')
+
+	)
+	code = models.CharField(max_length=150)
+	valid_from = models.DateTimeField()
+	valid_to = models.DateTimeField()
+	count_value = models.IntegerField(default=100)
+	Profile_choices = models.CharField(choices=PROFILE_CHOICES, max_length=20)
+	created = models.DateTimeField(auto_now_add=True)
+	modified = models.DateTimeField(auto_now=True)
+	active = models.BooleanField(default=True)
+
+	def __str__(self):
+		return self.code

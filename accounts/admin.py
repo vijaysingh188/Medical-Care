@@ -1,5 +1,13 @@
 from django.contrib import admin
-from .models import SecurityQuestions,ModuleMaster,Contact,AddOnServices,Emptytext,pharamcytab,Labour,Empty,CustomUser
+from .models import CustomUser,SecurityQuestions,ModuleMaster,Contact,AddOnServices,Emptytext,pharamcytab,Labour,Empty,Coupon
+
+class CouponAdmin(admin.ModelAdmin):
+    list_display = ['code','valid_from','valid_to','count_value','active']
+    list_filter = ['valid_from','valid_to','count_value','active']
+    search_fields = ['code']
+
+
+
 # Register your models here.
 admin.site.register(SecurityQuestions)
 admin.site.register(ModuleMaster)
@@ -10,4 +18,5 @@ admin.site.register(pharamcytab)
 admin.site.register(Labour)
 admin.site.register(Empty)
 admin.site.register(CustomUser)
+admin.site.register(Coupon,CouponAdmin)
 

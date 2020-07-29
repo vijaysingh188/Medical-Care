@@ -1,20 +1,40 @@
 {% load static %}
 {% load widget_tweaks %}
 
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
-		<title>Health Perigon </title>
+    	<title>Health Perigon </title>
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">	
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="icon" type="image/png" href="{% static 'images/icon.png' %}"/>
 		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 		<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900" >
 		<link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
     </head>
-    <body>	
+    <body>
+    <script>
+    	function selectFormType() {
+        if (document.getElementById('hdc').checked) {
+            document.getElementById('hdcform').style.display = 'block';
+        }
+         else document.getElementById('hdcform').style.display = 'none';
+
+		if (document.getElementById('individual').checked) {
+            document.getElementById('individualform').style.display = 'block';
+        }
+         else document.getElementById('individualform').style.display = 'none';
+		}
+
+
+
+	</script>
+
+
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+	<script src="{% static 'js/popper-1.16.0.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <header>
 	    <div class="header">
 		    <div class="container">
@@ -29,7 +49,7 @@
 						<a class="icon-style" href="#"><i class="fa fa-instagram icon" aria-hidden="true"></i></a>
 				    </div>
 				</div>
-				<div class="login-btn-holder"><a class="login-btn" href="{% url 'login_view' %}">Login</a></div>  
+				<div class="login-btn-holder"><a class="login-btn" href="{% url 'login_view' %}">Login</a></div>
 			</div>
 	    </div>
 		<div class="container">
@@ -52,7 +72,7 @@
 			        </div>
 		        </div>
 	        </nav>
-        </div>	
+        </div>
     </header>
 	<!-- main-->
 	<div class="container">
@@ -65,11 +85,6 @@
 					</div>
 			    </div>
 
-
-
-
-
-
 				<div class="row" id="individualform">
 					<div class="col-md-12">
 								{% if messages %}
@@ -79,15 +94,13 @@
 										</div>
 									{% endfor %}
 								{% endif %}
-
-							<form class="needs-validation" method="post">
-								<div class="Contact-holder">
-									<div class="row">
-										<div class="col-md-12 mb-4 text-center">
-											<div class="Register-form-title"> INDIVIDUAL - REGISTRATION FORM </div>
-										</div>
+						<form class="needs-validation" method="post">
+							<div class="Contact-holder">
+							    <div class="row">
+									<div class="col-md-12 mb-4 text-center">
+									    <div class="Register-form-title"> INDIVIDUAL - REGISTRATION FORM </div>
 									</div>
-
+								</div>
 
 								<div class="row">
 									<div class="col-md-2">
@@ -110,7 +123,7 @@
 									    </div>
 									</div>
 								</div>
-								
+
 								<div class="row">
 									<div class="col-md-2">
 										<label class="color-white" for="">Mobile Number <span class="red-color"> * </span> : </label>
@@ -119,7 +132,7 @@
 										{{ form.phone_no | add_class:'form-control Contact-textbox' }}
 									</div>
 								</div>
-								
+
 								<div class="row">
 									<div class="col-md-2">
 										<label class="color-white" for="">Email Address <span class="red-color"> * </span> : </label>
@@ -130,13 +143,19 @@
 								</div>
 								<div class="row">
 									<div class="col-md-2">
+
 										<label class="color-white" for="">Password <span class="red-color"> * </span> : </label>
-									</div>
+										</div>
+
+
 									<div class="col-md-10 mb-3">
+									    <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
+
 										{{ form.password | add_class:'form-control Contact-textbox' }}
+
 									</div>
 								</div>
-								
+
 								<div class="row">
 									<div class="col-md-2">
 										<label class="color-white" for="">Use Code</label>
@@ -155,10 +174,10 @@
 						    </div>
 						</form>
 					</div>
-				</div>	
-				
+				</div>
+
 				<div class="row" id="hdcform" style="display:none;">
-				    <div class="col-md-12">	
+				    <div class="col-md-12">
 					    <ul class="nav nav-tabs" id="myTab" role="tablist">
 							<li class="nav-item">
 								<a class="nav-link active" data-toggle="tab" href="#hdcid" aria-selected="true">HDC - Individual Doctor</a>
@@ -179,17 +198,17 @@
 												<div class="Register-form-title"> HDC - INDIVIDUAL DOCTOR </div>
 											</div>
 										</div>
-		
-								        <div class="row"> 
+
+								        <div class="row">
 											<div class="col-md-2">
 												<label class="color-white" for="">Type of Doctor <span class="red-color">*</span> :</label>
 											</div>
 											<div class="col-md-10 mb-3">
-												
+
 												{{ form1.type_of_doctor | add_class:'form-control Contact-textbox' }}
 											</div>
 								        </div>
-								
+
 								        <div class="row">
 											<div class="col-md-2">
 												<label class="color-white">Name <span class="red-color"> * </span> : </label>
@@ -211,7 +230,7 @@
 												</div>
 											</div>
 										</div>
-								
+
 										<div class="row">
 											<div class="col-md-2">
 												<label class="color-white" for="">Mobile Number <span class="red-color"> * </span> : </label>
@@ -220,7 +239,7 @@
 												{{ form1.phone_no | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-								
+
 										<div class="row">
 											<div class="col-md-2">
 												<label class="color-white" for="">Email Address <span class="red-color"> * </span> : </label>
@@ -229,12 +248,13 @@
 												{{ form1.email | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-								
+
 										<div class="row">
 											<div class="col-md-2">
 												<label class="color-white" for="">Password <span class="red-color"> * </span> : </label>
 											</div>
 											<div class="col-md-10 mb-3">
+											     <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
 												{{ form1.password | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
@@ -245,15 +265,15 @@
 											</div>
 											<div class="col-md-10">
 												<div class="row">
-													<div class="col-md-3 mb-3">Pay 
+													<div class="col-md-3 mb-3">Pay
 														{{ form1.payment | add_class:'form-control Contact-textbox' }}
 													</div>
-													<div class="col-md-3 mb-3">Use Code 
+													<div class="col-md-3 mb-3">Use Code
 														{{ form1.usecode | add_class:'form-control Contact-textbox' }}
 													</div>
 												</div>
 											</div>
-											
+
 										</div>
 
 							        </div>
@@ -274,7 +294,7 @@
 												<div class="Register-form-title"> HDC - HOSPITAL </div>
 											</div>
 										</div>
-		
+
 										<div class="row">
 											<div class="col-md-2">
 												 <label class="color-white">Name of Hospital <span class="red-color"> * </span> : </label>
@@ -283,16 +303,14 @@
 												{{ form2.name_of_hospital | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-								
+
 										<div class="row">
 											<div class="col-md-2" >
 												<label class="color-white">Hospital Address <span class="red-color"> * </span> : </label>
 											</div>
 											<div class="col-md-10">
 												<div class="row">
-													<div class="col-md-4 mb-3">
-														{{ form2.house_no | add_class:'form-control Contact-textbox' }}
-													</div>
+
 													<div class="col-md-4 mb-3">
 														{{ form2.street | add_class:'form-control Contact-textbox' }}
 													</div>
@@ -320,7 +338,7 @@
 												</div>
 											</div>
 										</div>
-								
+
 										<div class="row">
 											<div class="col-md-2" >
 												<label class="color-white">Owner’s Name <span class="red-color"> * </span> : </label>
@@ -329,7 +347,7 @@
 												{{ form2.owner_name | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-										
+
 										<div class="row">
 											<div class="col-md-2">
 												<label class="color-white" for="">Mobile Number <span class="red-color"> * </span> : </label>
@@ -338,7 +356,7 @@
 												{{ form2.phone_no | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-										
+
 										<div class="row">
 											<div class="col-md-2">
 												<label class="color-white" for="">Email Address <span class="red-color"> * </span> : </label>
@@ -347,7 +365,7 @@
 												{{ form2.email | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-										
+
 										<div class="row">
 											<div class="col-md-2" >
 												<label class="color-white">No. of Doctor accounts<span class="red-color"> * </span> : </label>
@@ -356,33 +374,34 @@
 												{{ form2.no_of_doctor_accounts | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-								
+
 										<div class="row">
 											<div class="col-md-2">
 												<label class="color-white" for="">Password <span class="red-color"> * </span> : </label>
 											</div>
 											<div class="col-md-10 mb-3">
+											     <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
 												{{ form2.password | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-							
+
 										<div class="row" id="payment">
 											<div class="col-md-2">
 												<label class="color-white" for="">Payment <span class="red-color"> * </span> : </label>
 											</div>
 											<div class="col-md-10">
 												<div class="row">
-													<div class="col-md-3 mb-3">Pay 
+													<div class="col-md-3 mb-3">Pay
 														{{ form1.payment | add_class:'form-control Contact-textbox' }}
 													</div>
-													<div class="col-md-3 mb-3">Use Code 
+													<div class="col-md-3 mb-3">Use Code
 														{{ form1.usecode | add_class:'form-control Contact-textbox' }}
 													</div>
 												</div>
 											</div>
 										</div>
 							        </div>
-									
+
 									<div class="row">
 										<div class="col-md-12 mb-3">
 											<div class="Submit-btn-holder">
@@ -400,7 +419,7 @@
 												<div class="Register-form-title"> HDC - NURSING HOME </div>
 											</div>
 										</div>
-		
+
 										<div class="row">
 											<div class="col-md-2">
 												 <label class="color-white">Name of Nursing Home <span class="red-color"> * </span> : </label>
@@ -409,16 +428,14 @@
 												{{ form3.name_of_nursing_home | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-								
+
 										<div class="row">
 											<div class="col-md-2" >
 												<label class="color-white">Nursing Home  Address <span class="red-color"> * </span> : </label>
 											</div>
 											<div class="col-md-10">
 												<div class="row">
-													<div class="col-md-4 mb-3">
-														{{ form3.house_no | add_class:'form-control Contact-textbox' }}
-													</div>
+
 													<div class="col-md-4 mb-3">
 														{{ form3.street | add_class:'form-control Contact-textbox' }}
 													</div>
@@ -446,7 +463,7 @@
 												</div>
 											</div>
 										</div>
-										
+
 										<div class="row">
 											<div class="col-md-2" >
 												<label class="color-white">Owner’s Name <span class="red-color"> * </span> : </label>
@@ -455,7 +472,7 @@
 												{{ form3.owner_name | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-								
+
 										<div class="row">
 											<div class="col-md-2">
 												<label class="color-white" for="">Mobile Number <span class="red-color"> * </span> : </label>
@@ -464,7 +481,7 @@
 												{{ form3.phone_no | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-										
+
 										<div class="row">
 											<div class="col-md-2">
 												<label class="color-white" for="">Email Address <span class="red-color"> * </span> : </label>
@@ -473,7 +490,7 @@
 												{{ form3.email | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-								
+
 										<div class="row">
 											<div class="col-md-2" >
 												<label class="color-white">No. of Doctor accounts<span class="red-color"> * </span> : </label>
@@ -482,30 +499,32 @@
 												{{ form3.no_of_doctor_accounts | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-										
+
 										<div class="row">
 											<div class="col-md-2">
 												<label class="color-white" for="">Password <span class="red-color"> * </span> : </label>
 											</div>
 											<div class="col-md-10 mb-3">
+											     <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
 												{{ form3.password | add_class:'form-control Contact-textbox' }}
 											</div>
 										</div>
-									
+
 										<div class="row" id="payment">
 											<div class="col-md-2">
 												<label class="color-white" for="">Payment <span class="red-color"> * </span> : </label>
 											</div>
 											<div class="col-md-10">
 												<div class="row">
-													<div class="col-md-3 mb-3">Pay 
+													<div class="col-md-3 mb-3">Pay
 														{{ form1.payment | add_class:'form-control Contact-textbox' }}
 													</div>
-													<div class="col-md-3 mb-3">Use Code 
+													<div class="col-md-3 mb-3">Use Code
 														{{ form1.usecode | add_class:'form-control Contact-textbox' }}
 													</div>
 												</div>
 											</div>
+
 										</div>
 									</div>
 									<div class="row">
@@ -517,16 +536,15 @@
 									</div>
 								</form>
 						    </div>
-						</div>	
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 	<footer class="footer">
 	    <div class="container">
-		    <div class="copyright"> 
+		    <div class="copyright">
 			    <p>Copyright © Health Perigon 2020. All Rights Reserved</p>
 			</div>
 			<div class="footer-social-icons-holder">
@@ -536,23 +554,20 @@
 					<a class="footer-icon-style" href="#"><i class="fa fa-instagram icon" aria-hidden="true"></i></a>
 		    </div>
 		</div>
-	<footer>	
-	<script>
-	    function selectFormType() {
-        if (document.getElementById('hdc').checked) {
-            document.getElementById('hdcform').style.display = 'block';
-        }
-         else document.getElementById('hdcform').style.display = 'none';
-		  
-		if (document.getElementById('individual').checked) {
-            document.getElementById('individualform').style.display = 'block';
-        }
-         else document.getElementById('individualform').style.display = 'none';
-		}
-	</script>
+	<footer>
+	    <script type="text/javascript">
+    $("body").on('click', '.toggle-password', function() {
+    $(this).toggleClass("fa-eye fa-eye-slash");
+    var input = $("#pass_log_id");
+    if (input.attr("type") === "password") {
+      input.attr("type", "text");
+    } else {
+      input.attr("type", "password");
+    }
+});
+    </script>
 
-    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
-	<script src="{% static 'js/popper-1.16.0.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
     </body>
 </html>

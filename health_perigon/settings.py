@@ -33,8 +33,6 @@ INSTALLED_APPS = [
     'accounts',
     'profiles',
 
-    'rest_framework',
-    'jquery',
 ]
 
 MIDDLEWARE = [

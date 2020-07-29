@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from .models import SecurityQuestions, ModuleMaster, Contact, CustomUser, AddOnServices, pharamcytab, Labour, Emptytext, Empty
+from .models import SecurityQuestions, ModuleMaster, Contact, CustomUser, AddOnServices, pharamcytab, Labour, Emptytext, Empty,Coupon
 from django.http import Http404,HttpResponse
 from django.http import Http404
 from django.contrib import messages
@@ -238,40 +238,87 @@ def register(request):
 		if form.is_valid():
 			user = form.save(commit=False)
 			password = form.cleaned_data.get('password')
-			user.set_password(password)
-			user.is_individual = True
-			user.save()
-			email_subject = 'Welcome To Health Perigon!'
-			valid_till = (datetime.datetime.now() + datetime.timedelta(days=364)).date()
-			date = json.dumps(valid_till, indent=4, sort_keys=True, default=str)
-			type1 = "HDC - Individual User"
-			message = render_to_string('activate_account.html', {
-				'user': user,
-				'type': type1,
-				'valid_till': valid_till,
-			})
-			to_email = form.cleaned_data.get('email')
-			phone_no = form.cleaned_data.get('phone_no')
-			email = EmailMessage(email_subject, message, to=[to_email])
-			email.content_subtype = 'html'
-			email.send()
-			payload = {}
-			payload['authkey'] = "95631AQvoigMsq5ec52866P1"
-			payload['content-type'] = "application/json"
-			payload['mobiles'] = phone_no
-			payload['flow_id'] = "5efada07d6fc05445570a4f2"
-			payload['ID'] = user.special_id
-			print(payload)
-			url = "https://api.msg91.com/api/v5/flow/"
-			response = requests.post(url, json=payload)
-			data = response.json()
-			print("data", data)
-			login(request, user)
-			if request.user.is_authenticated:
-				IndivdualUserProfile.objects.create(user=request.user)
-			if next:
-				return redirect(next)
-			return redirect('profile_individual_user')
+			usecode = form.cleaned_data.get('usecode')
+
+
+			code_check = Coupon.objects.filter(code=usecode)
+			code_to_count = CustomUser.objects.filter(usecode=usecode).count()
+			count = Coupon.objects.filter(code=usecode).values_list('count_value',flat=True)
+			check_is_individual = Coupon.objects.filter(code=usecode).values_list('Profile_choices', flat=True)
+			print(check_is_individual[0], 'check_is_individual')                #is_individual
+			print(count[0],'count')
+			if (code_check.exists()==True and code_to_count<=count[0]):
+				print("do something for subscription")
+				user.set_password(password)
+				user.is_individual = True
+
+				user.save()
+				email_subject = 'Welcome To Health Perigon!'
+				valid_till = (datetime.datetime.now() + datetime.timedelta(days=364)).date()
+				date = json.dumps(valid_till, indent=4, sort_keys=True, default=str)
+				type1 = "HDC - Individual User"
+				message = render_to_string('activate_account.html', {
+					'user': user,
+					'type': type1,
+					'valid_till': valid_till,
+				})
+				to_email = form.cleaned_data.get('email')
+				phone_no = form.cleaned_data.get('phone_no')
+				email = EmailMessage(email_subject, message, to=[to_email])
+				email.content_subtype = 'html'
+				email.send()
+				payload = {}
+				payload['authkey'] = "95631AQvoigMsq5ec52866P1"
+				payload['content-type'] = "application/json"
+				payload['mobiles'] = phone_no
+				payload['flow_id'] = "5efada07d6fc05445570a4f2"
+				payload['ID'] = user.special_id
+				print(payload)
+				url = "https://api.msg91.com/api/v5/flow/"
+				response = requests.post(url, json=payload)
+				data = response.json()
+				print("data", data)
+				login(request, user)
+				if request.user.is_authenticated:
+					IndivdualUserProfile.objects.create(user=request.user)
+				if next:
+					return redirect(next)
+				return redirect('profile_individual_user')
+			else:
+				user.set_password(password)
+				user.is_individual = True
+				user.save()
+				email_subject = 'Welcome To Health Perigon!'
+				valid_till = (datetime.datetime.now() + datetime.timedelta(days=364)).date()
+				date = json.dumps(valid_till, indent=4, sort_keys=True, default=str)
+				type1 = "HDC - Individual User"
+				message = render_to_string('activate_account.html', {
+					'user': user,
+					'type': type1,
+					'valid_till': valid_till,
+				})
+				to_email = form.cleaned_data.get('email')
+				phone_no = form.cleaned_data.get('phone_no')
+				email = EmailMessage(email_subject, message, to=[to_email])
+				email.content_subtype = 'html'
+				email.send()
+				payload = {}
+				payload['authkey'] = "95631AQvoigMsq5ec52866P1"
+				payload['content-type'] = "application/json"
+				payload['mobiles'] = phone_no
+				payload['flow_id'] = "5efada07d6fc05445570a4f2"
+				payload['ID'] = user.special_id
+				print(payload)
+				url = "https://api.msg91.com/api/v5/flow/"
+				response = requests.post(url, json=payload)
+				data = response.json()
+				print("data", data)
+				login(request, user)
+				if request.user.is_authenticated:
+					IndivdualUserProfile.objects.create(user=request.user)
+				if next:
+					return redirect(next)
+				return redirect('profile_individual_user')
 		else:
 			email = request.POST.get('email')
 			phone_no = request.POST.get('phone_no')
