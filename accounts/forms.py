@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
 from django.forms import ModelForm
-from .models import SecurityQuestions, ModuleMaster, Contact, CustomUser, AddOnServices, pharamcytab, Emptytext, Labour, Empty
+from .models import Coupon,SecurityQuestions, ModuleMaster, Contact, CustomUser, AddOnServices, pharamcytab, Emptytext, Labour, Empty
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
 
@@ -284,4 +284,7 @@ class labo1(ModelForm):
       model=Empty
       fields=['id','Labour','froms','to','gender','umo1','umo2','conversationfactor','refrencerange','high']
 
-
+class CouponForm(ModelForm):
+	class Meta:
+		model = Coupon
+		fields = ['code','valid_from','valid_to','Profile_choices']

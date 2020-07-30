@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
-from accounts.views import Coupon_status_change,coupon_code_list,account_status_change,individual_doctor_user_list,home, login_view, logout_view, contact, activate_account, register, password_reset, contact_master, change_password, send_otp, verify_otp, existing_module_master, create_module_master, edit_module_master, destroy_module_master, addservice,addonservice,destroyonservice,pharmacy,pharmacytable,laboratory,lob,destroypharamcy,labotable,destroylaboratory,destroyemptytext,edit_laboratorytable,edit_service,edit_pharmacy,edit_labotable,update_database,labo2,user_list,add_individual_user,User_creation
+from accounts.views import add_coupon,Coupon_status_change,coupon_code_list,account_status_change,individual_doctor_user_list,home, login_view, logout_view, contact, activate_account, register, password_reset, contact_master, change_password, send_otp, verify_otp, existing_module_master, create_module_master, edit_module_master, destroy_module_master, addservice,addonservice,destroyonservice,pharmacy,pharmacytable,laboratory,lob,destroypharamcy,labotable,destroylaboratory,destroyemptytext,edit_laboratorytable,edit_service,edit_pharmacy,edit_labotable,update_database,labo2,user_list,add_individual_user,User_creation
 from profiles.views import individual_doctor, individual_user, nursing_home, hospital
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -49,8 +49,9 @@ urlpatterns = [
 
     path('user_list/', user_list, name='user_list'),
     path('account_status_change/',account_status_change,name='account_status_change'),
-    path('coupon_code_list',coupon_code_list,name='coupon_code_list'),
-    path('Coupon_status_change',Coupon_status_change,name='Coupon_status_change')
+    path('coupon_code_list/',coupon_code_list,name='coupon_code_list'),
+    path('Coupon_status_change/',Coupon_status_change,name='Coupon_status_change'),
+    path('add_coupon/',add_coupon,name='add_coupon')
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

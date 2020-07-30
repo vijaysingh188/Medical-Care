@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, get_user_model, login, logout
-from .forms import UserLoginForm, SecurityQuestionsForm, PasswordForm, IndivdualUserForm, IndivdualDoctorForm, HospitalForm, NursingHomeForm, ModuleMasterForm, ContactForm, PasswordVerificationForm, AddServices, pharamcy, laboratorylab, labo, labo1
+from .forms import CouponForm,UserLoginForm, SecurityQuestionsForm, PasswordForm, IndivdualUserForm, IndivdualDoctorForm, HospitalForm, NursingHomeForm, ModuleMasterForm, ContactForm, PasswordVerificationForm, AddServices, pharamcy, laboratorylab, labo, labo1
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from .models import SecurityQuestions, ModuleMaster, Contact, CustomUser, AddOnServices, pharamcytab, Labour, Emptytext, Empty,Coupon
+from .models import Coupon,SecurityQuestions, ModuleMaster, Contact, CustomUser, AddOnServices, pharamcytab, Labour, Emptytext, Empty
 from django.http import Http404,HttpResponse
 from django.http import Http404
 from django.contrib import messages
@@ -879,6 +879,31 @@ def Coupon_status_change(request):
 		print("else")
 		some_list = Coupon.objects.filter(code=status['id']).update(active=True)
 	return HttpResponse()
+
+@csrf_exempt
+def add_coupon(request):
+	print(request.POST)
+	print("cbsssn")
+	if request.method == 'POST':
+		form = CouponForm(request.POST)
+		if form.is_valid():
+			code = form.cleaned_data.get('code')
+			valid_from = form.cleaned_data.get('valid_from')
+			valid_to = form.cleaned_data.get('valid_to')
+			profile_choices = form.cleaned_data.get('profile_choices')
+			print(code,valid_from,valid_to)
+
+
+			if form.save():
+				return redirect('/add_coupon', messages.success(request, 'Coupon is successfully created.', 'alert-success'))
+			else:
+				return redirect('/add_coupon', messages.error(request, 'Coupon is not saved', 'alert-danger'))
+		else:
+			return redirect('/add_coupon', messages.error(request, 'Form is not valid', 'alert-danger'))
+	else:
+		form = CouponForm()
+		return render(request, 'added_coupon.html',{'form':form})
+
 
 
 
