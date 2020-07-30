@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
+{% load static %}
 
 {% block title %} Subscription Master - Module Master {% endblock %}
 
@@ -32,12 +33,12 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form class="needs-validation" method="post" enctype="multipart/form-data">
+                                <form class="needs-validation" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
                                         <div class="row">
                                             <div class="col-md-4 mb-3">
                                                 <label for=""> Module <span class="red-color"> * </span></label>
-                                                {{ form.code | add_class:'form-control' }}
+                                                <input type="text" class="form-control" placeholder="code" name="code" id="code">
                                             </div>
 
 
@@ -72,7 +73,7 @@
                                             <div class="col-md-12">
                                                 <div class="mybtn-holder">
                                                     <button class="mybtn" data-toggle="collapse" data-target="#demo">Cancel</button>
-                                                    <button class="mybtn" type="submit">Add</button>
+                                                    <button class="mybtn" id="myBtnSave" type="submit">Add</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -87,7 +88,45 @@
 
     {% endblock %}
     {% block javascript %}
+
+
+ <script>
+$(document).ready(function(){
+
+     $("#myBtnSave").click(function(){
+                    var code = $("#code").val();
+                    alert(code);
+                });
+
+    var conceptName = $('#Profile_choices').find(":selected").val();
+    console.log(conceptName)
+
+  $("#datepicker_from").datepicker({
+    "onSelect": function(date) {
+      minDateFilter = new Date(date).getTime();
+      console.log("minDateFilter"+minDateFilter)
+      oTable.draw();
+    }
+  })
+  $("#datepicker_to").datepicker({
+    "onSelect": function(date) {
+      maxDateFilter = new Date(date).getTime();
+      console.log("maxDateFilter"+maxDateFilter)
+      oTable.draw();
+    }
+  })
+
+
+});
+    </script>
+
 <script>
+
+$(document).ready(function(){
+
+});
+
 </script>
+
 
     {% endblock %}

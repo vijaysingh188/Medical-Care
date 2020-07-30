@@ -285,6 +285,25 @@ class labo1(ModelForm):
       fields=['id','Labour','froms','to','gender','umo1','umo2','conversationfactor','refrencerange','high']
 
 class CouponForm(ModelForm):
+	# PROFILE_CHOICES = (
+	# 	('is_individual', 'is_individual'),
+	# 	('is_hdc_individual', 'is_hdc_individual'),
+	# 	('is_hdc_hospital', 'is_hdc_hospital'),
+	# 	('is_hdc_nursing_home', 'is_hdc_nursing_home')
+	#
+	# )
+	# code = forms.CharField(label='code',
+	# 								   widget=forms.TextInput(
+	# 									   attrs={'class': 'form-control', 'placeholder': 'code'}))
+	#
+	# Profile_choices = forms.ChoiceField(label='',widget = forms.TextInput(
+	# 	attrs={'class': 'form-control', 'placeholder': 'code','choice':'PROFILE_CHOICES'}))
+	#
+	# valid_from = forms.DateField(widget=forms.SelectDateWidget(attrs={'class':'form-control'}))
+	# valid_to = forms.DateField(widget=forms.SelectDateWidget(attrs={'class':'form-control'}))
+
 	class Meta:
 		model = Coupon
 		fields = ['code','valid_from','valid_to','Profile_choices']
+
+
