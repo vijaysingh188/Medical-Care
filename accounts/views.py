@@ -880,29 +880,55 @@ def Coupon_status_change(request):
 		some_list = Coupon.objects.filter(code=status['id']).update(active=True)
 	return HttpResponse()
 
+# @csrf_exempt
+# def add_coupon(request):
+# 	print(request.POST.get('code'))
+# 	print("cbsssn")
+# 	if request.method == 'POST':
+# 		form = CouponForm(request.POST)
+# 		if form.is_valid():
+# 			code = form.cleaned_data.get('code')
+# 			valid_from = form.cleaned_data.get('valid_from')
+# 			valid_to = form.cleaned_data.get('valid_to')
+# 			profile_choices = form.cleaned_data.get('profile_choices')
+# 			print(code,valid_from,valid_to)
+#
+#
+# 			if form.save():
+# 				return redirect('/add_coupon', messages.success(request, 'Coupon is successfully created.', 'alert-success'))
+# 			else:
+# 				return redirect('/add_coupon', messages.error(request, 'Coupon is not saved', 'alert-danger'))
+# 		else:
+# 			return redirect('/add_coupon', messages.error(request, 'Form is not valid', 'alert-danger'))
+# 	else:
+# 		form = CouponForm()
+# 		return render(request, 'added_coupon.html',{'form':form})
+
+
+
 @csrf_exempt
 def add_coupon(request):
-	print(request.POST)
-	print("cbsssn")
-	if request.method == 'POST':
+	form = CouponForm()
+	return render(request, 'added_coupon.html',{'form':form})
+
+def Coupon_to_create(request):
+	print("sdhgskhbvs")
+
+	if request.method == "POST" and request.is_ajax():
 		form = CouponForm(request.POST)
-		if form.is_valid():
-			code = form.cleaned_data.get('code')
-			valid_from = form.cleaned_data.get('valid_from')
-			valid_to = form.cleaned_data.get('valid_to')
-			profile_choices = form.cleaned_data.get('profile_choices')
-			print(code,valid_from,valid_to)
+		form.save()
+		return JsonResponse({"success": True}, status=200)
+	return JsonResponse({"success": False}, status=400)
 
 
-			if form.save():
-				return redirect('/add_coupon', messages.success(request, 'Coupon is successfully created.', 'alert-success'))
-			else:
-				return redirect('/add_coupon', messages.error(request, 'Coupon is not saved', 'alert-danger'))
-		else:
-			return redirect('/add_coupon', messages.error(request, 'Form is not valid', 'alert-danger'))
-	else:
-		form = CouponForm()
-		return render(request, 'added_coupon.html',{'form':form})
+
+
+
+
+
+
+
+
 
 
 
@@ -923,9 +949,11 @@ def add_coupon(request):
 # 		print("else")
 # 		some_list = Coupon.objects.filter(code=status['id']).update(active=True)
 # 	return HttpResponse()
-
-
-
+	# try:
+	# 	Coupon.save()
+	# 	return HttpResponse('true')
+	# except:
+	# 	return HttpResponse('false')
 
 
 
