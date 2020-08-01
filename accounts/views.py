@@ -18,6 +18,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 import datetime
 import json
+from django.views import View
 from .decorators import superadmin_required
 from profiles.models import IndivdualDoctorProfile, NursingHomeProfile, HospitalProfile, IndivdualUserProfile
 # from django.contrib.auth.forms import SetPasswordForm
@@ -841,16 +842,6 @@ def coupon_code_list(request):
 
 
 
-# code_check = Coupon.objects.filter(code=usecode)
-# 			code_to_count = CustomUser.objects.filter(usecode=usecode).count()
-# 			count = Coupon.objects.filter(code=usecode).values_list('count_value',flat=True)
-# 			check_is_individual = Coupon.objects.filter(code=usecode).values_list('Profile_choices', flat=True)
-# 			print(check_is_individual[0], 'check_is_individual')                #is_individual
-# 			print(count[0],'count')
-#left databse
-
-
-
 def account_status_change(request):
     status = request.GET
     print(status,"status")
@@ -880,80 +871,48 @@ def Coupon_status_change(request):
 		some_list = Coupon.objects.filter(code=status['id']).update(active=True)
 	return HttpResponse()
 
-# @csrf_exempt
-# def add_coupon(request):
-# 	print(request.POST.get('code'))
-# 	print("cbsssn")
-# 	if request.method == 'POST':
-# 		form = CouponForm(request.POST)
-# 		if form.is_valid():
-# 			code = form.cleaned_data.get('code')
-# 			valid_from = form.cleaned_data.get('valid_from')
-# 			valid_to = form.cleaned_data.get('valid_to')
-# 			profile_choices = form.cleaned_data.get('profile_choices')
-# 			print(code,valid_from,valid_to)
-#
-#
-# 			if form.save():
-# 				return redirect('/add_coupon', messages.success(request, 'Coupon is successfully created.', 'alert-success'))
-# 			else:
-# 				return redirect('/add_coupon', messages.error(request, 'Coupon is not saved', 'alert-danger'))
-# 		else:
-# 			return redirect('/add_coupon', messages.error(request, 'Form is not valid', 'alert-danger'))
-# 	else:
-# 		form = CouponForm()
-# 		return render(request, 'added_coupon.html',{'form':form})
-
-
 
 @csrf_exempt
 def add_coupon(request):
 	form = CouponForm()
 	return render(request, 'added_coupon.html',{'form':form})
 
-def Coupon_to_create(request):
-	print("sdhgskhbvs")
 
+@csrf_exempt
+def Coupon_to_create(request):
+
+	# form = CouponForm(request.POST or None)
+	print(request.POST)
 	if request.method == "POST" and request.is_ajax():
+		print("innn")
+
+		print(request.POST.get('code'))
+
 		form = CouponForm(request.POST)
-		form.save()
+		if form.is_valid():
+			form.save()
+		print(form.is_valid,"form")
+		print(form.errors, "form")
 		return JsonResponse({"success": True}, status=200)
 	return JsonResponse({"success": False}, status=400)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-# def Coupon_status_change(request):
-# 	status = request.GET
-# 	some_list = Coupon.objects.filter(code=status['id']).values_list('active')
-# 	print(some_list,'some_list')
-# 	subtitle = []
-# 	for value in some_list:
-# 		subtitle.append(value['active'])
-# 	print(subtitle[0], 'subtitle')
-# 	print(some_list, 'some_list')
-# 	if subtitle[0] == True:
-# 		print("yes")
-# 		some_list =Coupon.objects.filter(code=status['id']).update(active=False)
-# 	elif subtitle[0] == False:
-# 		print("else")
-# 		some_list = Coupon.objects.filter(code=status['id']).update(active=True)
-# 	return HttpResponse()
-	# try:
-	# 	Coupon.save()
-	# 	return HttpResponse('true')
-	# except:
-	# 	return HttpResponse('false')
+# class AddCoupon(View):
+# 	http_method_names = ['get', 'post', 'head', 'options', 'trace']
+# 	form_class = CouponForm()
+# 	template_name = "added_coupon.html"
+#
+# 	def get(self, *args, **kwargs):
+# 		form = self.form_class()
+# 		return render(self.request, self.template_name, {"CouponForm": form})
+#
+# 	def post(self, *args, **kwargs):
+# 		if self.request.method == "POST" and self.request.is_ajax():
+# 			form = self.form_class(self.request.POST)
+# 			form.save()
+# 			return JsonResponse({"success":True}, status=200)
+# 		return JsonResponse({"success":False}, status=400)
 
 
 

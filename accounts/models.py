@@ -206,10 +206,10 @@ class Coupon(models.Model):
 
 	)
 	code = models.CharField(max_length=6)
-	valid_from = models.DateTimeField()
-	valid_to = models.DateTimeField()
+	startDate = models.DateField()
+	endDate = models.DateField()
 	count_value = models.IntegerField(default=100)
-	Profile_choices = models.CharField(choices=PROFILE_CHOICES, max_length=20)
+	profileChoices = models.CharField(choices=PROFILE_CHOICES, max_length=20)
 	created = models.DateTimeField(auto_now_add=True)
 	modified = models.DateTimeField(auto_now=True)
 	active = models.BooleanField(default=True)

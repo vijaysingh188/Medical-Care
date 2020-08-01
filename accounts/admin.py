@@ -2,8 +2,8 @@ from django.contrib import admin
 from .models import CustomUser,SecurityQuestions,ModuleMaster,Contact,AddOnServices,Emptytext,pharamcytab,Labour,Empty,Coupon
 
 class CouponAdmin(admin.ModelAdmin):
-    list_display = ['code','valid_from','valid_to','count_value','active']
-    list_filter = ['valid_from','valid_to','count_value','active']
+    list_display = ['code','startDate','endDate','count_value','active']
+    list_filter = ['startDate','endDate','count_value','active']
     search_fields = ['code']
 
 

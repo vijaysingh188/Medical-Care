@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 {% load static %}
 
-{% block title %} Subscription Master - Module Master {% endblock %}
+{% block title %} Added Coupon{% endblock %}
 
 {% block body %}
 
@@ -47,7 +47,7 @@
                                                 <div class="form-group ">
                                                     <span class="color">Start Date</span>
                                                     <div class="input-group">
-                                                        <input type="text"  class="form-control border-right-0 border date_range_filter " id="datepicker_from" placeholder="dd/mm/yyyy">
+                                                        <input type="text" name="startDate" class="form-control border-right-0 border date_range_filter " id="datepicker_from" placeholder="dd/mm/yyyy">
                                                     </div>
                                                 </div>
                                             </div>
@@ -55,14 +55,14 @@
                                                 <div class="form-group">
                                                     <span class="color">End Date</span>
                                                     <div class="input-group">
-                                                        <input type="text"  class="form-control border-right-0 border date_range_filter " id="datepicker_to" placeholder="dd/mm/yyyy">
+                                                        <input type="text" name="endData" class="form-control border-right-0 border date_range_filter " id="datepicker_to" placeholder="dd/mm/yyyy">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             </p>
                                              <div class="col-md-4 mb-3">
-                                            <select class="form-control"  id="Profile_choices">
+                                            <select class="form-control" name="profileChoice" id="Profile_choices">
 												    	<option value="is_individual" >Is Individual</option>
 														<option value="is_hdc_individual" >Is hdc Individual</option>
                                                         <option value="is_hdc_hospital" >Is hdc Hospital</option>
@@ -89,71 +89,28 @@
     {% endblock %}
     {% block javascript %}
 
+
+
 <script>
 
-$(document).ready(function() {
+$(document).on('submit','#formSubmit',function(e){
+    e.preventDefault();
 
-    let formData = {
-        code:"",
-        startDate:"",
-        endDate:"",
-        profileChoice:""
-    };
+    $.ajax({
+        type:'POST',
+        url:"{% url 'Coupon_to_create' %}",
+        data:{
+            'code':$('#code').val(),
+            'startDate':$('#datepicker_from').val(),
+            'endDate':$('#datepicker_to').val(),
+            'profileChoices':$('#Profile_choices').val(),
 
-    $("#myBtnSave").click(function(e) {
-        e.preventDefault();
-		formData.code = $("#code").val();
-		formData.startDate = $("#datepicker_from").datepicker({ dateFormat: 'dd,MM,yyyy' }).val();
-		formData.endDate = $("#datepicker_to").datepicker({ dateFormat: 'dd,MM,yyyy' }).val();
-		formData.profileChoice = $('#Profile_choices').find(":selected").val();
-		console.log(formData);
-    });
-
-    $("#datepicker_from").datepicker({
-        altFormat: "yy-mm-dd",
-        "onSelect": function(date) {
-            $("#datepicker_from").datepicker("option", "minDate", startDate);
-        }
-    });
-
-    $("#datepicker_to").datepicker({
-        altFormat: "yy-mm-dd",
-        "onSelect": function(date) {
-            $("#datepicker_to").datepicker("option", "minDate", startDate);
-        }
-    });
-
-var myJSON = JSON.stringify(formData);
-console.log(myJSON);
-
-$('#formSubmit').on('submit', function(e){
-
-e.preventDefault();
-
-
-
-  $.ajax({
-       type : "POST",
-       url: "{% url 'Coupon_to_create' %}",
-        data : myJSON,
-       headers: { "X-CSRFToken": "{{ csrf_token }}" },
-
-       success : function(response){
-
-
-      			$("#formSubmit")[0].reset();
-      		},
-      		error : function(response){
-      			console.log(response)
-      		}
-
-   });
-
+            'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+        },
+        success:function(data){
+        console.log("done")}
 
         });
-
-
-
-});
+        });
 </script>
     {% endblock %}
