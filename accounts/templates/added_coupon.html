@@ -89,28 +89,64 @@
     {% endblock %}
     {% block javascript %}
 
-
-
 <script>
 
-$(document).on('submit','#formSubmit',function(e){
-    e.preventDefault();
+$(document).ready(function() {
 
-    $.ajax({
+    let formData = {
+        code:"",
+        startDate:"",
+        endDate:"",
+        profileChoice:""
+    };
+
+    $("#myBtnSave").click(function(e) {
+        e.preventDefault();
+		formData.code = $("#code").val();
+		formData.startDate = $("#datepicker_from").datepicker({ dateFormat: 'dd,MM,yyyy' }).val();
+		formData.endDate = $("#datepicker_to").datepicker({ dateFormat: 'dd,MM,yyyy' }).val();
+		formData.profileChoice = $('#Profile_choices').find(":selected").val();
+		console.log(formData);
+
+		$.ajax({
         type:'POST',
         url:"{% url 'Coupon_to_create' %}",
         data:{
-            'code':$('#code').val(),
-            'startDate':$('#datepicker_from').val(),
-            'endDate':$('#datepicker_to').val(),
-            'profileChoices':$('#Profile_choices').val(),
+            'code':formData.code,
+            'startDate':formData.startDate,
+            'endDate':formData.endDate,
+            'profileChoices':formData.profileChoice,
 
             'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
-        },
-        success:function(data){
-        console.log("done")}
+             },
+                success:function(data){
+                alert("Coupon added succesfully")
+
+
+                                      }
 
         });
-        });
+
+    });
+
+    $("#datepicker_from").datepicker({
+        altFormat: "yy-mm-dd",
+        "onSelect": function(date) {
+            $("#datepicker_from").datepicker("option", "minDate", startDate);
+        }
+    });
+
+    $("#datepicker_to").datepicker({
+        altFormat: "yy-mm-dd",
+        "onSelect": function(date) {
+            $("#datepicker_to").datepicker("option", "minDate", startDate);
+        }
+    });
+
+
+
+});
 </script>
+
+
     {% endblock %}
