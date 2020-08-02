@@ -781,24 +781,24 @@ def User_creation(request):
 # qury = CustomUser.objects.filter(email__icontains="mike")
 
 
-@csrf_exempt
-def individual_doctor_user_list(request):
-	print(request.user)
-	user_list=IndivdualUserProfile.objects.filter(user=request.user).values_list('email1',flat=True) #dob, email1, gender, id, landline_no, phone_no1, relation_email, relation_name,
-	print(user_list,"user_list")
-	user_custom_data=CustomUser.objects.filter(email__in=user_list).values('email','country')
-	print(user_custom_data,"user_custom_data")
-	return render(request,'User_List.html',{'user_data':user_custom_data})
+# @csrf_exempt
+# def individual_doctor_user_list(request):
+# 	print(request.user)
+# 	user_list=IndivdualUserProfile.objects.filter(user=request.user).values_list('email1',flat=True) #dob, email1, gender, id, landline_no, phone_no1, relation_email, relation_name,
+# 	print(user_list,"user_list")
+# 	user_custom_data=CustomUser.objects.filter(email__in=user_list).values('email','country')
+# 	print(user_custom_data,"user_custom_data")
+# 	return render(request,'User_List.html',{'user_data':user_custom_data})
 
 
-def user_list(request):
+def Custom_user_list(request):
 	custmore_obj = CustomUser.objects.all().values()
 	print(custmore_obj,"custmore_obj")
 	context = {
 		'customers':custmore_obj
 	}
-	return render(request,'user_list.html',context)
-
+	return render(request,'custom_user_list.html',context)
+@csrf_exempt
 def coupon_code_list(request):
 	coupon_obj = Coupon.objects.all().values_list('code', flat=True)
 	print(coupon_obj, "cp_obj")
@@ -841,8 +841,8 @@ def coupon_code_list(request):
 
 
 
-
-def account_status_change(request):
+@csrf_exempt
+def custom_account_status_change(request):
     status = request.GET
     print(status,"status")
     some_list = CustomUser.objects.filter(special_id=status['id']).values_list('is_active', flat=True)
@@ -855,7 +855,7 @@ def account_status_change(request):
         some_list = CustomUser.objects.filter(special_id=status['id']).update(is_active=True)
     return HttpResponse()
 
-
+@csrf_exempt
 def Coupon_status_change(request):
 	status = request.GET
 	some_list = Coupon.objects.filter(code=status['id']).values_list('active')
@@ -898,21 +898,6 @@ def Coupon_to_create(request):
 
 
 
-# class AddCoupon(View):
-# 	http_method_names = ['get', 'post', 'head', 'options', 'trace']
-# 	form_class = CouponForm()
-# 	template_name = "added_coupon.html"
-#
-# 	def get(self, *args, **kwargs):
-# 		form = self.form_class()
-# 		return render(self.request, self.template_name, {"CouponForm": form})
-#
-# 	def post(self, *args, **kwargs):
-# 		if self.request.method == "POST" and self.request.is_ajax():
-# 			form = self.form_class(self.request.POST)
-# 			form.save()
-# 			return JsonResponse({"success":True}, status=200)
-# 		return JsonResponse({"success":False}, status=400)
 
 
 

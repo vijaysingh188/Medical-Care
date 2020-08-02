@@ -14,7 +14,7 @@
 						<div class="row">
 							<div class="col-md-12">
 							    <div class="btn-holder">
-							        <a class="link-btn-2" href="{% url 'add_individual_user' %}">Add User</a>
+							        <a class="link-btn-2" href="#">Add User</a>
 									<hr class="hrstyle" />
 						        </div>
 							</div>
@@ -161,7 +161,7 @@ $.fn.dataTableExt.afnFiltering.push(
     		console.log(row,"this is row");
 
 	    $.ajax({
-	      url: "{% url 'account_status_change' %}",
+	      url: "{% url 'custom_account_status_change' %}",
 	      type: "GET",
 		  data: {"id":row},
 	      headers: { "X-CSRFToken": "{{ csrf_token }}" }, // for csrf token
