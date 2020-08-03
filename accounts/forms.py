@@ -287,6 +287,6 @@ class labo1(ModelForm):
 class CouponForm(ModelForm):
 	class Meta:
 		model = Coupon
-		fields = ['code','startDate','endDate','profileChoices']
+		fields = ['code','count_value','startDate','endDate','profileChoices']
 
 

@@ -10,9 +10,9 @@
             <div class="inner-navbar">
                 <div class="col-md-12">
                     <ul class="nav nav-tabs">
-                        <li class="nav-item"><a class="nav-link active" href="Subscription_Master-Existing_Module_Master.html">Module Master</a></li>
-                        <li class="nav-item"><a class="nav-link" href="Subscription_Master-Existing_Add-on_Services.html">Add-on Services</a></li>
-                        <li class="nav-item"><a class="nav-link" href="Subscription_Master-Existing_Subscription_Plan.html">Subscription Plan</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">Create Coupon</a></li>
+<!--                        <li class="nav-item"><a class="nav-link" href="Subscription_Master-Existing_Add-on_Services.html">Add-on Services</a></li>-->
+<!--                        <li class="nav-item"><a class="nav-link" href="Subscription_Master-Existing_Subscription_Plan.html">Subscription Plan</a></li>-->
                     </ul>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                         <div class="col-md-12 order-md-1">
                             <h5 class="title-holder">Create Coupon</h5>
                             <div class="btn-holder">
-                                <a class="link-btn" href="{% url 'Custom_user_list' %}">Back to list</a>
+                                <a class="link-btn" href="{% url 'coupon_code_list' %}">Back to list</a>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
@@ -37,14 +37,22 @@
 
                                         <div class="row">
                                             <div class="col-md-4 mb-3">
-                                                <label for=""> Module <span class="red-color"> * </span></label>
+
+                                                <label for=""> Code <span class="red-color"> * </span></label>
                                                 <input type="text" class="form-control" placeholder="code" name="code" id="code">
                                             </div>
+
+                                            <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                                <label for=""> Count <span class="red-color"> * </span></label>
+                                                <input type="text" class="form-control" placeholder="count" name="count_value" id="count_value">
+                                            </div>
+
 
 
                                             <p id="date_filter">
                                             <div class="col-md-4 mb-3">
-                                                <div class="form-group ">
+                                                <div class="form-group">
                                                     <span class="color">Start Date</span>
                                                     <div class="input-group">
                                                         <input type="text" name="startDate" class="form-control border-right-0 border date_range_filter " id="datepicker_from" placeholder="dd/mm/yyyy">
@@ -63,12 +71,14 @@
                                             </p>
                                              <div class="col-md-4 mb-3">
                                             <select class="form-control" name="profileChoice" id="Profile_choices">
+<!--                                                        <option value="" >-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>-->
 												    	<option value="is_individual" >Is Individual</option>
-														<option value="is_hdc_individual" >Is hdc Individual</option>
+														<option value="is_hdc_individual" >Is hdc Individual Doctor</option>
                                                         <option value="is_hdc_hospital" >Is hdc Hospital</option>
 														<option value="is_hdc_nursing_home" >Is hdc Nursing_home</option>
                                             </select>
                                              </div>
+
 
                                             <div class="col-md-12">
                                                 <div class="mybtn-holder">
@@ -95,6 +105,7 @@ $(document).ready(function() {
 
     let formData = {
         code:"",
+        count_value:"",
         startDate:"",
         endDate:"",
         profileChoice:""
@@ -103,6 +114,7 @@ $(document).ready(function() {
     $("#myBtnSave").click(function(e) {
         e.preventDefault();
 		formData.code = $("#code").val();
+		formData.count_value = $("#count_value").val();
 		formData.startDate = $("#datepicker_from").datepicker({ dateFormat: 'dd,MM,yyyy' }).val();
 		formData.endDate = $("#datepicker_to").datepicker({ dateFormat: 'dd,MM,yyyy' }).val();
 		formData.profileChoice = $('#Profile_choices').find(":selected").val();
@@ -113,17 +125,24 @@ $(document).ready(function() {
         url:"{% url 'Coupon_to_create' %}",
         data:{
             'code':formData.code,
+            'count_value':formData.count_value,
             'startDate':formData.startDate,
             'endDate':formData.endDate,
             'profileChoices':formData.profileChoice,
 
             'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
              },
-                success:function(data){
+                success:function(response){
                 alert("Coupon added succesfully")
+                $("#formSubmit")[0].reset();
 
 
-                                      }
+
+              },
+
+               error : function(data) {
+            alert("Coupon was created earlier")
+        },
 
         });
 

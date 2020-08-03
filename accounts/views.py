@@ -17,6 +17,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 import datetime
+from django.utils import timezone
 import json
 from django.views import View
 from .decorators import superadmin_required
@@ -245,11 +246,19 @@ def register(request):
 			code_check = Coupon.objects.filter(code=usecode)
 			code_to_count = CustomUser.objects.filter(usecode=usecode).count()
 			count = Coupon.objects.filter(code=usecode).values_list('count_value',flat=True)
-			check_is_individual = Coupon.objects.filter(code=usecode).values_list('Profile_choices', flat=True)
-			print(check_is_individual[0], 'check_is_individual')                #is_individual
-			print(count[0],'count')
-			if (code_check.exists()==True and code_to_count<=count[0]):
+			check_date = Coupon.objects.filter(code=usecode).values_list('endDate', flat=True)
+			print(check_date[0])
+
+			# print(datetime.date.today().strftime('20%y-%m-%d'))
+			# print((str(check_date[0]) >= str(datetime.date.today().strftime('20%y-%m-%d'))))
+			# c = Coupon.coupon.expired()
+
+			check_is_individual = Coupon.objects.filter(code=usecode).values_list('profileChoices', flat=True)
+			# print(check_is_individual[0], 'check_is_individual')                #is_individual
+			# print(count[0],'count')
+			if (code_check.exists()==True and code_to_count<=count[0] and (str(check_date[0]) >= str(datetime.date.today().strftime('20%y-%m-%d')))):
 				print("do something for subscription")
+
 				user.set_password(password)
 				user.is_individual = True
 
@@ -800,7 +809,7 @@ def Custom_user_list(request):
 	return render(request,'custom_user_list.html',context)
 @csrf_exempt
 def coupon_code_list(request):
-	coupon_obj = Coupon.objects.all().values_list('code', flat=True)
+	coupon_obj = Coupon.coupon.all().values_list('code', flat=True)
 	print(coupon_obj, "cp_obj")
 	final_data = []
 
@@ -880,20 +889,38 @@ def add_coupon(request):
 
 @csrf_exempt
 def Coupon_to_create(request):
+	print("im here")
 
 	# form = CouponForm(request.POST or None)
 	print(request.POST)
 	if request.method == "POST" and request.is_ajax():
-		print("innn")
+		# print("innn")
+		#
+		code = request.POST.get('code')
+		# print(request.POST.get('count_value'))
+		# print(request.POST.get('profileChoices'))
+		#
+		# check_to_code = Coupon.objects.filter(profileChoices=request.POST.get('profileChoices')).exists()
+		# print(check_to_code,'check_to_code')
+		#
+		check_code = Coupon.objects.get(code=request.POST.get('code'))
+		print(check_code.profileChoices)
 
-		print(request.POST.get('code'))
+		print(check_code,'check_code')
+		if check_code == False:                                # and check_to_code == False
+			print("it should not come here")
+			form = CouponForm(request.POST)
+			if form.is_valid():
+				form.save()
+			print(form.is_valid, "form")
+			print(form.errors, "form")
+			return JsonResponse({"success": True}, status=200)
 
-		form = CouponForm(request.POST)
-		if form.is_valid():
-			form.save()
-		print(form.is_valid,"form")
-		print(form.errors, "form")
-		return JsonResponse({"success": True}, status=200)
+
+		else:
+			print("it should be failed")
+			return JsonResponse({"success": False}, status=400)
+
 	return JsonResponse({"success": False}, status=400)
 
 

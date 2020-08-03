@@ -197,6 +197,14 @@ class Empty(models.Model):
 	def __str__(self):
 		return self.gender
 
+
+class CouponManager(models.Manager):
+	def get_queryset(self):
+		return super().get_queryset().order_by('code')
+
+	def expired(self):
+		return self.filter(endDate__lt=timezone.now())
+
 class Coupon(models.Model):
 	PROFILE_CHOICES = (
 		('is_individual', 'is_individual'),
@@ -213,6 +221,13 @@ class Coupon(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	modified = models.DateTimeField(auto_now=True)
 	active = models.BooleanField(default=True)
+
+	objects = models.Manager()            #default
+	coupon = CouponManager()              #override
+
+	def expired(self):
+		return self.endDate is not None and self.endDate < timezone.now()
+
 
 	def __str__(self):
 		return self.code
