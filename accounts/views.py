@@ -76,62 +76,72 @@ def activate_account(request, uidb64, token):
 @csrf_exempt
 def register(request):
 	next = request.GET.get('next')
-
 	if 'individualdoctor' in request.POST:
 		form1 = IndivdualDoctorForm(request.POST)
 		if form1.is_valid():
 			form2 = HospitalForm(request.POST)
 			if form2.is_valid():
+				print("sbccccccccccccccccccccccccccccccccccccccc")
+				user = form1.save(commit=False)
 
 				usecode = request.POST['usecode']
-				print(usecode, 'usecode')
 				list_display = ['is_individual', 'is_hdc_individual', 'is_hdc_hospital', 'is_hdc_nursing_home']
-				code_check = Coupon.objects.filter(code=usecode, profileChoices='is_individual').exists()
-				print(code_check, "yes")
-				if code_check == True:
-					print("im ....................")
-				user = form1.save(commit=False)
-				password = form1.cleaned_data.get('password')
-				type = form1.cleaned_data.get('type_of_doctor')
+				code_check = Coupon.objects.filter(code=usecode, profileChoices='is_hdc_individual').exists()
+				print(code_check, 'code_check')
 
+				if (code_check == True):
+					print("ssssssssssssssssss")
+					code_to_count = CustomUser.objects.filter(usecode=usecode, is_hdc_individual=True)
+					counted_values = code_to_count.count()
+					print(counted_values, 'counted_values')
+					Coupon_count = Coupon.objects.get(code=usecode, profileChoices='is_hdc_individual')
+					counted_in_models = Coupon_count.count_value
+					Check_date = Coupon_count.endDate
+					print(counted_in_models, Check_date)
+					if (counted_values <= counted_in_models and (
+							str(Check_date) >= str(datetime.date.today().strftime('20%y-%m-%d')))):
 
-				user.type_of_doctor = type
-				user.set_password(password)
-				user.is_hdc_individual = True
-				user.save()
-				email_subject = 'Welcome To Health Perigon!'
-				valid_till = (datetime.datetime.now() + datetime.timedelta(days=364)).date()
-				date = json.dumps(valid_till, indent=4, sort_keys=True, default=str)
-				type1 = "HDC - Individual Doctor"
-				message = render_to_string('activate_account.html', {
-					'user': user,
-					'type': type1,
-					'valid_till': valid_till,
-				})
-				to_email = form1.cleaned_data.get('email')
-				phone_no = form1.cleaned_data.get('phone_no')
-				email = EmailMessage(email_subject, message, to=[to_email])
-				email.content_subtype = 'html'
-				email.send()
-				payload = {}
-				payload['authkey'] = "95631AQvoigMsq5ec52866P1"
-				payload['content-type'] = "application/json"
-				payload['mobiles'] = phone_no
-				payload['flow_id'] = "5efada07d6fc05445570a4f2"
-				payload['ID'] = user.special_id
-				print(payload)
-				url = "https://api.msg91.com/api/v5/flow/"
-				response = requests.post(url, json=payload)
-				data = response.json()
-				print("data", data)
-				login(request, user)
-				if request.user.is_authenticated:
-					IndivdualDoctorProfile.objects.create(user=request.user)
-				if next:
-					return redirect(next)
-				return redirect('profile_individual_doctor')
-			else:
-				return redirect('/register', messages.error(request, 'code is not valid', 'alert-danger'))
+						password = form1.cleaned_data.get('password')
+						type = form1.cleaned_data.get('type_of_doctor')
+
+						user.type_of_doctor = type
+						user.set_password(password)
+						user.is_hdc_individual = True
+						user.save()
+						email_subject = 'Welcome To Health Perigon!'
+						valid_till = (datetime.datetime.now() + datetime.timedelta(days=364)).date()
+						date = json.dumps(valid_till, indent=4, sort_keys=True, default=str)
+						type1 = "HDC - Individual Doctor"
+						message = render_to_string('activate_account.html', {
+							'user': user,
+							'type': type1,
+							'valid_till': valid_till,
+						})
+						to_email = form1.cleaned_data.get('email')
+						phone_no = form1.cleaned_data.get('phone_no')
+						email = EmailMessage(email_subject, message, to=[to_email])
+						email.content_subtype = 'html'
+						email.send()
+						payload = {}
+						payload['authkey'] = "95631AQvoigMsq5ec52866P1"
+						payload['content-type'] = "application/json"
+						payload['mobiles'] = phone_no
+						payload['flow_id'] = "5efada07d6fc05445570a4f2"
+						payload['ID'] = user.special_id
+						print(payload)
+						url = "https://api.msg91.com/api/v5/flow/"
+						response = requests.post(url, json=payload)
+						data = response.json()
+						print("data", data)
+						login(request, user)
+						if request.user.is_authenticated:
+							IndivdualDoctorProfile.objects.create(user=request.user)
+						if next:
+							return redirect(next)
+						return redirect('profile_individual_doctor')
+				else:
+					print("nooooooooo")
+					return redirect('/register', messages.error(request, 'code is invidual valid', 'alert-danger'))
 
 		else:
 			email = request.POST.get('email')
@@ -142,6 +152,8 @@ def register(request):
 				return redirect('/register', messages.error(request, 'Phone Number already Exists!', 'alert-danger'))
 			else:
 				return redirect('/register', messages.error(request, 'Form is not valid', 'alert-danger'))
+
+
 	else:
 		form1 = IndivdualDoctorForm(request.POST)
 
@@ -150,56 +162,62 @@ def register(request):
 		if form2.is_valid():
 
 			usecode = request.POST['usecode']
-			print(usecode, 'usecode')
 			list_display = ['is_individual', 'is_hdc_individual', 'is_hdc_hospital', 'is_hdc_nursing_home']
 			code_check = Coupon.objects.filter(code=usecode, profileChoices='is_hdc_hospital').exists()
-			print(code_check, "yes")
-			if code_check == True:
-				print("im ....................")
+			print(code_check,'code_check')
 
-				user = form2.save(commit=False)
-				password = form2.cleaned_data.get('password')
+			if (code_check == True):
+				code_to_count = CustomUser.objects.filter(usecode=usecode, is_hdc_hospital=True)
+				counted_values = code_to_count.count()
+				print(counted_values, 'counted_values')
+				Coupon_count = Coupon.objects.get(code=usecode, profileChoices='is_hdc_hospital')
+				counted_in_models = Coupon_count.count_value
+				Check_date = Coupon_count.endDate
+				print(counted_in_models, Check_date)
+				if (counted_values <= counted_in_models and (
+						str(Check_date) >= str(datetime.date.today().strftime('20%y-%m-%d')))):
 
+					user = form2.save(commit=False)
+					password = form2.cleaned_data.get('password')
 
-
-				payment = request.POST.get('yesno')
-				user.payment = payment
-				user.set_password(password)
-				user.is_hdc_hospital = True
-				user.save()
-				email_subject = 'Welcome To Health Perigon!'
-				valid_till = (datetime.datetime.now() + datetime.timedelta(days=364)).date()
-				date = json.dumps(valid_till, indent=4, sort_keys=True, default=str)
-				type1 = "HDC - Hospital"
-				message = render_to_string('activate_account.html', {
-					'user': user,
-					'type': type1,
-					'valid_till': valid_till,
-				})
-				to_email = form2.cleaned_data.get('email')
-				phone_no = form2.cleaned_data.get('phone_no')
-				email = EmailMessage(email_subject, message, to=[to_email])
-				email.content_subtype = 'html'
-				email.send()
-				payload = {}
-				payload['authkey'] = "95631AQvoigMsq5ec52866P1"
-				payload['content-type'] = "application/json"
-				payload['mobiles'] = phone_no
-				payload['flow_id'] = "5efada07d6fc05445570a4f2"
-				payload['ID'] = user.special_id
-				print(payload)
-				url = "https://api.msg91.com/api/v5/flow/"
-				response = requests.post(url, json=payload)
-				data = response.json()
-				print("data", data)
-				login(request, user)
-				if request.user.is_authenticated:
-					HospitalProfile.objects.create(user=request.user)
-				if next:
-					return redirect(next)
-				return redirect('profile_hospital')
-			else:
-				return redirect('/register', messages.error(request, 'code is invalid', 'alert-danger'))
+					payment = request.POST.get('yesno')
+					user.payment = payment
+					user.set_password(password)
+					user.is_hdc_hospital = True
+					user.save()
+					email_subject = 'Welcome To Health Perigon!'
+					valid_till = (datetime.datetime.now() + datetime.timedelta(days=364)).date()
+					date = json.dumps(valid_till, indent=4, sort_keys=True, default=str)
+					type1 = "HDC - Hospital"
+					message = render_to_string('activate_account.html', {
+						'user': user,
+						'type': type1,
+						'valid_till': valid_till,
+					})
+					to_email = form2.cleaned_data.get('email')
+					phone_no = form2.cleaned_data.get('phone_no')
+					email = EmailMessage(email_subject, message, to=[to_email])
+					email.content_subtype = 'html'
+					email.send()
+					payload = {}
+					payload['authkey'] = "95631AQvoigMsq5ec52866P1"
+					payload['content-type'] = "application/json"
+					payload['mobiles'] = phone_no
+					payload['flow_id'] = "5efada07d6fc05445570a4f2"
+					payload['ID'] = user.special_id
+					print(payload)
+					url = "https://api.msg91.com/api/v5/flow/"
+					response = requests.post(url, json=payload)
+					data = response.json()
+					print("data", data)
+					login(request, user)
+					if request.user.is_authenticated:
+						HospitalProfile.objects.create(user=request.user)
+					if next:
+						return redirect(next)
+					return redirect('profile_hospital')
+			elif (code_check==False):
+				return redirect('/register', messages.error(request, 'code is hospital invalid', 'alert-danger'))
 
 		else:
 			email = request.POST.get('email')
@@ -221,49 +239,66 @@ def register(request):
 			list_display = ['is_individual', 'is_hdc_individual', 'is_hdc_hospital', 'is_hdc_nursing_home']
 			code_check = Coupon.objects.filter(code=usecode, profileChoices='is_hdc_nursing_home').exists()
 			print(code_check, "yes")
+
+
 			if code_check == True:
 				print("im ....................")
+				# code_to_count = CustomUser.objects.filter(usecode=usecode,is_hdc_nursing_home=True).exists()
+				code_to_count = CustomUser.objects.filter(usecode=usecode, is_hdc_nursing_home=True)
 
-				user = form3.save(commit=False)
-				password = form3.cleaned_data.get('password')
-				user.set_password(password)
-				user.is_hdc_nursing_home = True
+				counted_values = code_to_count.count()
+				print(counted_values)
 
-				user.save()
-				email_subject = 'Welcome To Health Perigon!'
-				valid_till = (datetime.datetime.now() + datetime.timedelta(days=364)).date()
-				date = json.dumps(valid_till, indent=4, sort_keys=True, default=str)
-				type1 = "HDC - Nursing Home"
-				message = render_to_string('activate_account.html', {
-					'user': user,
-					'type': type1,
-					'valid_till': valid_till,
-				})
-				to_email = form3.cleaned_data.get('email')
-				phone_no = form3.cleaned_data.get('phone_no')
-				email = EmailMessage(email_subject, message, to=[to_email])
-				email.content_subtype = 'html'
-				email.send()
-				payload = {}
-				payload['authkey'] = "95631AQvoigMsq5ec52866P1"
-				payload['content-type'] = "application/json"
-				payload['mobiles'] = phone_no
-				payload['flow_id'] = "5efada07d6fc05445570a4f2"
-				payload['ID'] = user.special_id
-				print(payload)
-				url = "https://api.msg91.com/api/v5/flow/"
-				response = requests.post(url, json=payload)
-				data = response.json()
-				print("data", data)
-				login(request, user)
-				if request.user.is_authenticated:
-					NursingHomeProfile.objects.create(user=request.user)
-				if next:
-					return redirect(next)
-				return redirect('profile_nursing_home')
+				Coupon_count = Coupon.objects.get(code=usecode, profileChoices='is_hdc_nursing_home')
+				print(Coupon_count.count_value, 'Coupon_count')
+				counted_in_models = Coupon_count.count_value
+
+				print(Coupon_count.endDate, 'check_date')
+				Check_date = Coupon_count.endDate
+				if (counted_values <= counted_in_models and
+					str(Check_date) >= str(datetime.date.today().strftime('20%y-%m-%d'))):
+
+
+					user = form3.save(commit=False)
+					password = form3.cleaned_data.get('password')
+					user.set_password(password)
+					user.is_hdc_nursing_home = True
+
+					user.save()
+					email_subject = 'Welcome To Health Perigon!'
+					valid_till = (datetime.datetime.now() + datetime.timedelta(days=364)).date()
+					date = json.dumps(valid_till, indent=4, sort_keys=True, default=str)
+					type1 = "HDC - Nursing Home"
+					message = render_to_string('activate_account.html', {
+						'user': user,
+						'type': type1,
+						'valid_till': valid_till,
+					})
+					to_email = form3.cleaned_data.get('email')
+					phone_no = form3.cleaned_data.get('phone_no')
+					email = EmailMessage(email_subject, message, to=[to_email])
+					email.content_subtype = 'html'
+					email.send()
+					payload = {}
+					payload['authkey'] = "95631AQvoigMsq5ec52866P1"
+					payload['content-type'] = "application/json"
+					payload['mobiles'] = phone_no
+					payload['flow_id'] = "5efada07d6fc05445570a4f2"
+					payload['ID'] = user.special_id
+					print(payload)
+					url = "https://api.msg91.com/api/v5/flow/"
+					response = requests.post(url, json=payload)
+					data = response.json()
+					print("data", data)
+					login(request, user)
+					if request.user.is_authenticated:
+						NursingHomeProfile.objects.create(user=request.user)
+					if next:
+						return redirect(next)
+					return redirect('profile_nursing_home')
 			else:
-				print("form was not for you")
-				return redirect('/register', messages.error(request, 'code choice is invalid', 'alert-danger'))
+				return redirect('/register', messages.error(request, 'code choice nursing invalid', 'alert-danger'))
+
 		else:
 			email = request.POST.get('email')
 			phone_no = request.POST.get('phone_no')
@@ -341,7 +376,7 @@ def register(request):
 					return redirect(next)
 				return redirect('profile_individual_user')
 			else:
-				return redirect('/register', messages.error(request, 'code is invalid!', 'alert-danger'))
+				return redirect('/register', messages.error(request, 'code is invidual invalid!', 'alert-danger'))
 		else:
 			email = request.POST.get('email')
 			phone_no = request.POST.get('phone_no')
