@@ -11,6 +11,7 @@ from django.http import Http404
 from django.contrib import messages
 from django.http import JsonResponse
 import requests
+from django.db.models import Q
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
@@ -241,13 +242,16 @@ def register(request):
 			user = form.save(commit=False)
 			password = form.cleaned_data.get('password')
 			usecode = form.cleaned_data.get('usecode')
+			print(usecode,'usecode')
 
 
 			code_check = Coupon.objects.filter(code=usecode)
+			print(code_check[0],'code_check')
 			code_to_count = CustomUser.objects.filter(usecode=usecode).count()
 			count = Coupon.objects.filter(code=usecode).values_list('count_value',flat=True)
 			check_date = Coupon.objects.filter(code=usecode).values_list('endDate', flat=True)
 			print(check_date[0])
+
 
 			# print(datetime.date.today().strftime('20%y-%m-%d'))
 			# print((str(check_date[0]) >= str(datetime.date.today().strftime('20%y-%m-%d'))))
@@ -886,45 +890,19 @@ def add_coupon(request):
 	form = CouponForm()
 	return render(request, 'added_coupon.html',{'form':form})
 
-
 @csrf_exempt
 def Coupon_to_create(request):
-	print("im here")
-
-	# form = CouponForm(request.POST or None)
-	print(request.POST)
 	if request.method == "POST" and request.is_ajax():
-		# print("innn")
-		#
 		code = request.POST.get('code')
-		# print(request.POST.get('count_value'))
-		# print(request.POST.get('profileChoices'))
-		#
-		# check_to_code = Coupon.objects.filter(profileChoices=request.POST.get('profileChoices')).exists()
-		# print(check_to_code,'check_to_code')
-		#
-		check_code = Coupon.objects.get(code=request.POST.get('code'))
-		print(check_code.profileChoices)
-
-		print(check_code,'check_code')
-		if check_code == False:                                # and check_to_code == False
-			print("it should not come here")
+		check_code = Coupon.objects.filter(code=request.POST.get('code')).exists()
+		if request.POST.get('profileChoices') not in Coupon.objects.filter(code=code):
 			form = CouponForm(request.POST)
 			if form.is_valid():
 				form.save()
-			print(form.is_valid, "form")
-			print(form.errors, "form")
 			return JsonResponse({"success": True}, status=200)
-
-
 		else:
-			print("it should be failed")
 			return JsonResponse({"success": False}, status=400)
-
 	return JsonResponse({"success": False}, status=400)
-
-
-
 
 
 
